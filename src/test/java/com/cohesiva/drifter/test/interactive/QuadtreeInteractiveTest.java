@@ -32,7 +32,7 @@ public class QuadtreeInteractiveTest extends Applet {
 	/**
 	 * The <code>DEPTH</code> stands for an octree max depth.
 	 */
-	private static final int MAX_DEPTH = 2;
+	private static final int MAX_DEPTH = 6;
 
 	/**
 	 * The <code>image</code> stands for a painting buffer.

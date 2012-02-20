@@ -152,7 +152,7 @@ public class Rect implements IPaintable {
 		Location display = LocationTransform.toDisplayLocation(this.getTopLeft());
 		
 		graph.setColor(DEFAULT_FILL);
-		//graph.fillRect((int) display.x(), (int) display.y(), this.width, this.height);
+		graph.fillRect((int) display.x(), (int) display.y(), this.width, this.height);
 		graph.setColor(DEFAULT_PAINT);
 		graph.drawRect((int) display.x(), (int) display.y(), this.width, this.height);
 	}
