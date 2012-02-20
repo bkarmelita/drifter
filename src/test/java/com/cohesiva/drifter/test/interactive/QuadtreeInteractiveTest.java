@@ -1,5 +1,5 @@
 /**
- * 
+ * Copyright 2012 cohesiva.com
  */
 package com.cohesiva.drifter.test.interactive;
 
@@ -13,23 +13,22 @@ import com.cohesiva.drifter.common.DistanceUnit;
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.datastruct.ITreeNodeVisitor;
 import com.cohesiva.drifter.datastruct.Tree;
+import com.cohesiva.drifter.test.interactive.shapes.Square;
 
 /**
+ * The <code>QuadtreeInteractiveTest</code> represents an interactive test of a
+ * quadtree implementation.
+ * 
  * @author bkarmelita
  * 
  */
 public class QuadtreeInteractiveTest extends Applet {
 
 	/**
-	 * The <code>serialVersionUID</code> stands for a ... TODO
+	 * The <code>serialVersionUID</code> stands for a class serial UID.
 	 */
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * The <code>SIZE</code> stands for an octree initial size (visual).
-	 */
-	private static final int SIZE = 700;
-	
 	/**
 	 * The <code>DEPTH</code> stands for an octree max depth.
 	 */
@@ -64,7 +63,7 @@ public class QuadtreeInteractiveTest extends Applet {
 	public void init() {
 		super.init();
 
-		int size = SIZE + (int) (0.1 * SIZE);
+		int size = LocationTransform.SCREEN_SIZE;
 		this.setBackground(Color.WHITE);
 		this.setSize(size, size);
 
@@ -91,8 +90,10 @@ public class QuadtreeInteractiveTest extends Applet {
 	public boolean mouseMove(Event e, int x, int y) {
 		// save reference location
 		refLoc = new Location(x, y, 0, DistanceUnit.LIGHT_YEAR);
+		Location realLoc = LocationTransform.toRealLocation(refLoc);
+
 		// rebuild tree
-		quadtree.build(refLoc, 0, MAX_DEPTH);
+		quadtree.build(realLoc, 0, MAX_DEPTH);
 		// repaint all
 		this.repaint();
 
@@ -101,7 +102,8 @@ public class QuadtreeInteractiveTest extends Applet {
 
 	private void initQuadtree(Graphics graph) {
 		refLoc = new Location(50, 50, 0, DistanceUnit.LIGHT_YEAR);
-		Square sq = new Square(0, 0, SIZE);
+		Location centerLoc = new Location(0, 0, 0, DistanceUnit.LIGHT_YEAR);
+		Square sq = new Square(centerLoc, LocationTransform.SCREEN_SIZE);
 		SquareWithCircles sqit = new SquareWithCircles(0, 0, sq);
 		quadtree = new Tree<SquareWithCircles>(sqit);
 		visitor = new SquareTreePainter(graph);

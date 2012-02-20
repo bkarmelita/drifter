@@ -19,12 +19,13 @@ import org.junit.Test;
 
 import com.cohesiva.drifter.common.DistanceUnit;
 import com.cohesiva.drifter.common.Location;
+import com.cohesiva.drifter.split.IOffset;
+import com.cohesiva.drifter.split.SplitDegree;
 import com.cohesiva.drifter.stellar.BoundingBox;
 import com.cohesiva.drifter.stellar.IBoundingBox;
 import com.cohesiva.drifter.stellar.ISpace;
 import com.cohesiva.drifter.stellar.IStellar;
 import com.cohesiva.drifter.stellar.Space;
-import com.cohesiva.drifter.stellar.SpaceFactory;
 
 /**
  * The <code>SpaceTest</code> represents a space unit test.
@@ -87,26 +88,31 @@ public class SpaceTest {
 		stellars.add(start);
 		stellars.add(end);
 
-		BoundingBox box = BoundingBox.newInstance(stellars);
-		ISpace space = SpaceFactory.getInstance(Space.class).produceSpace(stellars, box);
+		IBoundingBox box = BoundingBox.newInstance(stellars);
+		ISpace space = new Space(stellars, box);
+		
+		SplitDegree splitDegree = space.splitDegree();
+		ISpace[] splitted = new ISpace[splitDegree.value()];
+		for (IOffset offset : splitDegree.offsets()) {
+			splitted[offset.offsetIndex()] = (ISpace) space.onSplit(targetLocation, offset);
+		}
+		space.onSplitComplete(targetLocation, splitted);
 
-		ISpace[] subspaces = (ISpace[]) space.split(targetLocation, 0);
-
-		ISpace frontBottomLeftSpace = subspaces[0];
+		ISpace frontBottomLeftSpace = splitted[0];
 		IBoundingBox frontBottomLeftBox = frontBottomLeftSpace.bounds();
-		ISpace frontBottomRightSpace = subspaces[1];
+		ISpace frontBottomRightSpace = splitted[1];
 		IBoundingBox frontBottomRightBox = frontBottomRightSpace.bounds();
-		ISpace frontTopLeftSpace = subspaces[2];
+		ISpace frontTopLeftSpace = splitted[2];
 		IBoundingBox frontTopLeftBox = frontTopLeftSpace.bounds();
-		ISpace frontTopRightSpace = subspaces[3];
+		ISpace frontTopRightSpace = splitted[3];
 		IBoundingBox frontTopRightBox = frontTopRightSpace.bounds();
-		ISpace rearBottomLeftSpace = subspaces[4];
+		ISpace rearBottomLeftSpace = splitted[4];
 		IBoundingBox rearBottomLeftBox = rearBottomLeftSpace.bounds();
-		ISpace rearBottomRightSpace = subspaces[5];
+		ISpace rearBottomRightSpace = splitted[5];
 		IBoundingBox rearBottomRightBox = rearBottomRightSpace.bounds();
-		ISpace rearTopLeftSpace = subspaces[6];
+		ISpace rearTopLeftSpace = splitted[6];
 		IBoundingBox rearTopLeftBox = rearTopLeftSpace.bounds();
-		ISpace rearTopRightSpace = subspaces[7];
+		ISpace rearTopRightSpace = splitted[7];
 		IBoundingBox rearTopRightBox = rearTopRightSpace.bounds();
 
 		assertEquals(new Location(-5, -5, -5, DistanceUnit.LIGHT_YEAR),
@@ -142,23 +148,27 @@ public class SpaceTest {
 		assertEquals(5, rearBottomRightBox.radius(), 0);
 		assertNull(rearBottomRightSpace.stellars());
 
-		subspaces = (ISpace[]) frontBottomLeftSpace.split(targetLocation, 0);
+		
+		for (IOffset offset : splitDegree.offsets()) {
+			splitted[offset.offsetIndex()] = (ISpace) frontBottomLeftSpace.onSplit(targetLocation, offset);
+		}
+		frontBottomLeftSpace.onSplitComplete(targetLocation, splitted);
 
-		frontBottomLeftSpace = subspaces[0];
+		frontBottomLeftSpace = splitted[0];
 		frontBottomLeftBox = frontBottomLeftSpace.bounds();
-		frontBottomRightSpace = subspaces[1];
+		frontBottomRightSpace = splitted[1];
 		frontBottomRightBox = frontBottomRightSpace.bounds();
-		frontTopLeftSpace = subspaces[2];
+		frontTopLeftSpace = splitted[2];
 		frontTopLeftBox = frontTopLeftSpace.bounds();
-		frontTopRightSpace = subspaces[3];
+		frontTopRightSpace = splitted[3];
 		frontTopRightBox = frontTopRightSpace.bounds();
-		rearBottomLeftSpace = subspaces[4];
+		rearBottomLeftSpace = splitted[4];
 		rearBottomLeftBox = rearBottomLeftSpace.bounds();
-		rearBottomRightSpace = subspaces[5];
+		rearBottomRightSpace = splitted[5];
 		rearBottomRightBox = rearBottomRightSpace.bounds();
-		rearTopLeftSpace = subspaces[6];
+		rearTopLeftSpace = splitted[6];
 		rearTopLeftBox = rearTopLeftSpace.bounds();
-		rearTopRightSpace = subspaces[7];
+		rearTopRightSpace = splitted[7];
 		rearTopRightBox = rearTopRightSpace.bounds();
 
 		assertEquals(new Location(-7.5, -7.5, -7.5, DistanceUnit.LIGHT_YEAR),

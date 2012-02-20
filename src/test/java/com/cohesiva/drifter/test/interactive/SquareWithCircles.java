@@ -8,10 +8,13 @@ import java.util.List;
 import java.util.Random;
 
 import com.cohesiva.drifter.common.Location;
-import com.cohesiva.drifter.datastruct.IComplex;
-import com.cohesiva.drifter.datastruct.IPopulationStrategy;
-import com.cohesiva.drifter.datastruct.ISplitCriteria;
-import com.cohesiva.drifter.datastruct.SplitDegree;
+import com.cohesiva.drifter.population.IPopulationStrategy;
+import com.cohesiva.drifter.split.IComplex;
+import com.cohesiva.drifter.split.IOffset;
+import com.cohesiva.drifter.terrain.BoundingSquare;
+import com.cohesiva.drifter.terrain.IBoundingSquare;
+import com.cohesiva.drifter.test.interactive.shapes.Circle;
+import com.cohesiva.drifter.test.interactive.shapes.Square;
 
 /**
  * The <code>SquareWithCircles</code> represents an example
@@ -21,15 +24,9 @@ import com.cohesiva.drifter.datastruct.SplitDegree;
  * @author bkarmelita
  * 
  */
-public class SquareWithCircles implements IComplex {
+public class SquareWithCircles extends BoundingSquare {
 
-	private static final ISplitCriteria<SquareWithCircles> SPLIT_CRITERIA = new InsideSquareCriteria();
 	private static final IPopulationStrategy<SquareWithCircles> POP_STRATEGY = new CirclePopulationStrategy();
-	
-	/**
-	 * The <code>depth</code> stands for a depth origin.
-	 */
-	protected int depth;
 
 	/**
 	 * The <code>square</code> stands for a
@@ -40,7 +37,7 @@ public class SquareWithCircles implements IComplex {
 	 * The <code>circles</code> stands for circes of this square.
 	 */
 	protected List<Circle> circles;
-	
+
 	/**
 	 * The <code>random</code> stands for a randomizer.
 	 */
@@ -53,41 +50,24 @@ public class SquareWithCircles implements IComplex {
 	 * @param square
 	 */
 	public SquareWithCircles(int idx, int depth, Square square) {
-		super();
-		this.depth = depth;
+		super(square.getCenter(), square.getWidth()/2, depth);
 		this.square = square;
 		this.circles = new ArrayList<Circle>(2);
 		this.random = new Random(idx);
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.cohesiva.drifter.datastruct.IComplex#depth()
+	
+	/**
+	 * Creates the new <code>SquareWithCircles</code> instance.
+	 *
+	 * @param idx
+	 * @param depth
+	 * @param bounds
 	 */
-	@Override
-	public int depth() {
-		return depth;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.cohesiva.drifter.datastruct.IComplex#splitDegree()
-	 */
-	@Override
-	public SplitDegree splitDegree() {
-		return SplitDegree.QUARTER;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.cohesiva.drifter.datastruct.IComplex#defaultSplitStrategy()
-	 */
-	@Override
-	public ISplitCriteria<SquareWithCircles> splitCriteria() {
-		return SPLIT_CRITERIA;
+	public SquareWithCircles(int idx, int depth, IBoundingSquare bounds) {
+		super(bounds.center(), bounds.radius(), depth);
+		this.square = new Square(bounds.center(), (int) (2*bounds.radius()));
+		this.circles = new ArrayList<Circle>(2);
+		this.random = new Random(idx);
 	}
 
 	/*
@@ -97,55 +77,77 @@ public class SquareWithCircles implements IComplex {
 	 */
 	@Override
 	public int complexity() {
-		return 0;
+		return (circles != null ? circles.size() : 0);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.cohesiva.drifter.datastruct.IComplex#split(com.cohesiva.drifter.common
-	 * .Location)
+	 * com.cohesiva.drifter.datastruct.IComplex#onSplit(com.cohesiva.drifter
+	 * .common.Location, com.cohesiva.drifter.datastruct.IOffset)
 	 */
 	@Override
-	public IComplex[] split(Location referenceLocation, int parentIndex) {
-		SquareWithCircles[] splitted = new SquareWithCircles[this.splitDegree()
-				.value()];
+	public IComplex onSplit(Location referenceLocation, IOffset offset) {
+		// split space bounds first
+		IBoundingSquare subbound = (IBoundingSquare) super.onSplit(referenceLocation, offset);
+		// than split holder
+		SquareWithCircles holder = new SquareWithCircles(1, this.depth + 1, subbound);
+		// populate
+		POP_STRATEGY.populate(holder, referenceLocation);
 
-		// {{ iterate through splitted holders
-		for (Offset offset : Offset.values()) {
-			Square offsetSquare = offset.offset(this.square);
-			SquareWithCircles holder = new SquareWithCircles(parentIndex, this.depth + 1,
-					offsetSquare);
-			POP_STRATEGY.populate(holder, referenceLocation);
-			splitted[offset.ordinal()] = holder;
-		}
-		// }}
-
-		for (Circle circle : this.circles) {
-			for (Offset offset : Offset.values()) {
-				SquareWithCircles holder = splitted[offset.ordinal()];
-				if (Square.isInside(holder.square, circle.getLocx(),
-						circle.getLocy())) {
-					splitted[offset.ordinal()].circles.add(circle);
-					break;
-				}
-			}
-		}
-		return splitted;
+		return holder;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.cohesiva.drifter.datastruct.IComplex#merge(com.cohesiva.drifter.
-	 * datastruct.IComplex)
+	 * @see
+	 * com.cohesiva.drifter.datastruct.IComplex#onSplitComplete(com.cohesiva
+	 * .drifter.common.Location, com.cohesiva.drifter.datastruct.IComplex[])
 	 */
 	@Override
-	public void merge(IComplex other) {
-		SquareWithCircles sq = (SquareWithCircles) other;
-		sq.square = null;
-		sq.random = null;
+	public void onSplitComplete(Location referenceLocation,
+			IComplex[] splittedParts) {
+		for (Circle circle : this.circles) {
+			for (IOffset offset : this.splitDegree().offsets()) {
+				SquareWithCircles holder = (SquareWithCircles) splittedParts[offset
+						.offsetIndex()];
+				if (holder.isSurrounding(referenceLocation, 0)) {
+					((SquareWithCircles) splittedParts[offset.offsetIndex()]).circles
+							.add(circle);
+					break;
+				}
+
+			}
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.cohesiva.drifter.datastruct.IComplex#onMerge(com.cohesiva.drifter
+	 * .common.Location, com.cohesiva.drifter.datastruct.IComplex)
+	 */
+	@Override
+	public void onMerge(Location referenceLocation, IComplex mergedWhole) {
+		this.square = null;
+		this.random = null;
+		this.circles.clear();
+		this.circles = null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.cohesiva.drifter.datastruct.IComplex#onMergeComplete(com.cohesiva
+	 * .drifter.common.Location)
+	 */
+	@Override
+	public void onMergeComplete(Location referenceLocation) {
+		// do nothing
 	}
 
 }

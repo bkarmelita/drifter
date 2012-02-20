@@ -6,7 +6,8 @@ package com.cohesiva.drifter.test.interactive;
 import com.cohesiva.drifter.common.DistanceUnit;
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.common.RandomLocation;
-import com.cohesiva.drifter.datastruct.IPopulationStrategy;
+import com.cohesiva.drifter.population.IPopulationStrategy;
+import com.cohesiva.drifter.test.interactive.shapes.Circle;
 
 /**
  * The <code>CirclePopulationStrategy</code> represents an example of simple
@@ -32,12 +33,13 @@ public class CirclePopulationStrategy implements
 	public void populate(SquareWithCircles square, Location referenceLocation) {
 		// set up fuse
 		int idx = square.depth() <= 6 ? square.depth() : 6;
+		Location topLeft = square.square.getTopLeft();
 		
 		// {{ compute min and max
-		int minx = square.square.getLocx() + circeRadiusByDepth[idx];
-		int miny = square.square.getLocy() + circeRadiusByDepth[idx];
-		int maxx = square.square.getLocx() + square.square.getWidth() - circeRadiusByDepth[idx];
-		int maxy = square.square.getLocy() + square.square.getWidth() - circeRadiusByDepth[idx];
+		int minx = (int) topLeft.x() + circeRadiusByDepth[idx];
+		int miny = (int) topLeft.y() + circeRadiusByDepth[idx];
+		int maxx = (int) topLeft.x() + square.square.getWidth() - circeRadiusByDepth[idx];
+		int maxy = (int) topLeft.y() + square.square.getWidth() - circeRadiusByDepth[idx];
 		// }}
 		
 		// {{ compute location bounds
@@ -47,7 +49,7 @@ public class CirclePopulationStrategy implements
 		
 		// populate 2 new circles
 		square.circles.add(new Circle(new RandomLocation(minLocation, maxLocation, square.random), circeRadiusByDepth[idx]));
-		square.circles.add(new Circle(new RandomLocation(minLocation, maxLocation, square.random), circeRadiusByDepth[idx]));
+		//square.circles.add(new Circle(new RandomLocation(minLocation, maxLocation, square.random), circeRadiusByDepth[idx]));
 	}
 
 }

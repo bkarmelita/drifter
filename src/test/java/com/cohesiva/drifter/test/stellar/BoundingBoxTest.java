@@ -15,6 +15,8 @@ import org.junit.Test;
 
 import com.cohesiva.drifter.common.DistanceUnit;
 import com.cohesiva.drifter.common.Location;
+import com.cohesiva.drifter.split.IOffset;
+import com.cohesiva.drifter.split.SplitDegree;
 import com.cohesiva.drifter.stellar.BoundingBox;
 import com.cohesiva.drifter.stellar.IBoundingBox;
 import com.cohesiva.drifter.stellar.IStellar;
@@ -50,7 +52,7 @@ public class BoundingBoxTest {
 		stellars.add(start);
 		stellars.add(end);
 
-		BoundingBox box = BoundingBox.newInstance(stellars);
+		IBoundingBox box = BoundingBox.newInstance(stellars);
 
 		assertEquals(new Location(0, 0, 0, DistanceUnit.LIGHT_YEAR),
 				box.center());
@@ -64,8 +66,11 @@ public class BoundingBoxTest {
 		stellars.add(end);
 
 		IBoundingBox box = BoundingBox.newInstance(stellars);
-
-		IBoundingBox[] splitted = (IBoundingBox[]) box.split(targetLocation, 0);
+		SplitDegree splitDegree = box.splitDegree();
+		IBoundingBox[] splitted = new IBoundingBox[splitDegree.value()];
+		for (IOffset offset : splitDegree.offsets()) {
+			splitted[offset.offsetIndex()] = (IBoundingBox) box.onSplit(targetLocation, offset);
+		}
 
 		IBoundingBox frontBottomLeft = splitted[0];
 		IBoundingBox frontBottomRight = splitted[1];

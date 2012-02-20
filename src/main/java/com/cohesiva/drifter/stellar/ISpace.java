@@ -5,7 +5,7 @@ package com.cohesiva.drifter.stellar;
 
 import java.util.List;
 
-import com.cohesiva.drifter.datastruct.IComplex;
+import com.cohesiva.drifter.split.IComplex;
 
 /**
  * The <code>ISpace</code> defines the interface for the target universe or its

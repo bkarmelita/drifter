@@ -1,9 +1,10 @@
 /**
- * Copyright 2010 Simpatico.
+ * Copyright 2010 cohesiva.com.
  */
 package com.cohesiva.drifter.stellar;
 
 import com.cohesiva.drifter.common.Location;
+import com.cohesiva.drifter.split.IComplex;
 
 /**
  * The <code>IBoundingBox</code> defines an interface for the cubic bounding
@@ -12,7 +13,7 @@ import com.cohesiva.drifter.common.Location;
  * @author bkarmelita
  * 
  */
-public interface IBoundingBox {
+public interface IBoundingBox extends IComplex {
 
 	/**
 	 * Get the bounding box center location.
@@ -31,7 +32,7 @@ public interface IBoundingBox {
 	/**
 	 * Checks if the given location is surrounded by this bounds.
 	 * 
-	 * @param spatial
+	 * @param location
 	 *            to check
 	 * @return <code>true</code> if surrounded; <code>false</code> otherwise;
 	 */

@@ -269,4 +269,21 @@ public class Location {
 				&& otherLocation.z() == z;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("(");
+		sb.append(this.x);
+		sb.append(", ");
+		sb.append(this.y);
+		sb.append(", ");
+		sb.append(this.z);
+		sb.append(")");
+		
+		return sb.toString();
+	}
+
 }

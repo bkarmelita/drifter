@@ -7,6 +7,7 @@ import java.awt.Graphics;
 
 import com.cohesiva.drifter.datastruct.ITreeNode;
 import com.cohesiva.drifter.datastruct.ITreeNodeVisitor;
+import com.cohesiva.drifter.test.interactive.shapes.Circle;
 
 /**
  * The <code>SquareTreePainter</code> represents a square quadtree painter

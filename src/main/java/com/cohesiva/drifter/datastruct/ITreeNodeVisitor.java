@@ -3,6 +3,8 @@
  */
 package com.cohesiva.drifter.datastruct;
 
+import com.cohesiva.drifter.split.IComplex;
+
 
 /**
  * The <code>INodeVisitor</code> represents an interface for an abstract tree

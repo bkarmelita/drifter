@@ -19,7 +19,6 @@ import com.cohesiva.drifter.stellar.IBoundingBox;
 import com.cohesiva.drifter.stellar.ISpace;
 import com.cohesiva.drifter.stellar.IStellar;
 import com.cohesiva.drifter.stellar.Space;
-import com.cohesiva.drifter.stellar.SpaceFactory;
 import com.cohesiva.drifter.stellar.Star;
 import com.cohesiva.drifter.stellar.StarClass;
 
@@ -31,7 +30,6 @@ import com.cohesiva.drifter.stellar.StarClass;
  */
 public class OctreePerformanceTest {
 
-	private SpaceFactory spaceFactory = SpaceFactory.getInstance(Space.class);
 	private List<IStellar> stars100K = new LinkedList<IStellar>();
 	private List<IStellar> stars50K = new LinkedList<IStellar>();
 	private Location targetLocation = new Location(0, 0, 0, DistanceUnit.LIGHT_YEAR);
@@ -58,97 +56,97 @@ public class OctreePerformanceTest {
 	
 	@Test
 	public void test100KStarBuildDepth3() {
-		IBoundingBox bounds = BoundingBox.newInstance(stars100K);
-		ISpace space = spaceFactory.produceSpace(stars100K, bounds);
-		ITreeNode<ISpace> octree = new Tree<ISpace>(space);
+		BoundingBox bounds = BoundingBox.newInstance(stars100K);
+		Space space = new Space(stars100K, bounds);
+		ITreeNode<Space> octree = new Tree<Space>(space);
 		octree.build( targetLocation, 3);
 	}
 	
 	@Test
 	public void test100KStarBuildDepth7() {
-		IBoundingBox bounds = BoundingBox.newInstance(stars100K);
-		ISpace space = spaceFactory.produceSpace(stars100K, bounds);
-		ITreeNode<ISpace> octree = new Tree<ISpace>(space);
+		BoundingBox bounds = BoundingBox.newInstance(stars100K);
+		Space space = new Space(stars100K, bounds);
+		ITreeNode<Space> octree = new Tree<Space>(space);
 		octree.build(targetLocation, 7);
 	}
 	
 	@Test
 	public void test100KStarBuildDepth12() {
-		IBoundingBox bounds = BoundingBox.newInstance(stars100K);
-		ISpace space = spaceFactory.produceSpace(stars100K, bounds);
-		ITreeNode<ISpace> octree = new Tree<ISpace>(space);
+		BoundingBox bounds = BoundingBox.newInstance(stars100K);
+		Space space = new Space(stars100K, bounds);
+		ITreeNode<Space> octree = new Tree<Space>(space);
 		octree.build(targetLocation, 12);
 	}
 	
 	@Test
 	public void test100KStarBuildThreshold10() {
-		IBoundingBox bounds = BoundingBox.newInstance(stars100K);
-		ISpace space = spaceFactory.produceSpace(stars100K, bounds);
-		ITreeNode<ISpace> octree = new Tree<ISpace>(space);
+		BoundingBox bounds = BoundingBox.newInstance(stars100K);
+		Space space = new Space(stars100K, bounds);
+		ITreeNode<Space> octree = new Tree<Space>(space);
 		octree.build(targetLocation, 3);
 	}
 	
 	@Test
 	public void test100KStarBuildThreshold100() {
-		IBoundingBox bounds = BoundingBox.newInstance(stars100K);
-		ISpace space = spaceFactory.produceSpace(stars100K, bounds);
-		ITreeNode<ISpace> octree = new Tree<ISpace>(space);
+		BoundingBox bounds = BoundingBox.newInstance(stars100K);
+		Space space = new Space(stars100K, bounds);
+		ITreeNode<Space> octree = new Tree<Space>(space);
 		octree.build(targetLocation, 7);
 	}
 	
 	@Test
 	public void test100KStarBuildThreshold1000() {
-		IBoundingBox bounds = BoundingBox.newInstance(stars100K);
-		ISpace space = spaceFactory.produceSpace(stars100K, bounds);
-		ITreeNode<ISpace> octree = new Tree<ISpace>(space);
+		BoundingBox bounds = BoundingBox.newInstance(stars100K);
+		Space space = new Space(stars100K, bounds);
+		ITreeNode<Space> octree = new Tree<Space>(space);
 		octree.build(targetLocation, 12);
 	}
 	
 	@Test
 	public void test50KStarBuildDepth3() {
-		IBoundingBox bounds = BoundingBox.newInstance(stars50K);
-		ISpace space = spaceFactory.produceSpace(stars50K, bounds);
-		ITreeNode<ISpace> octree = new Tree<ISpace>(space);
+		BoundingBox bounds = BoundingBox.newInstance(stars50K);
+		Space space = new Space(stars50K, bounds);
+		ITreeNode<Space> octree = new Tree<Space>(space);
 		octree.build(targetLocation, 3);
 	}
 	
 	@Test
 	public void test50KStarBuildDepth7() {
-		IBoundingBox bounds = BoundingBox.newInstance(stars50K);
-		ISpace space = spaceFactory.produceSpace(stars50K, bounds);
-		ITreeNode<ISpace> octree = new Tree<ISpace>(space);
+		BoundingBox bounds = BoundingBox.newInstance(stars50K);
+		Space space = new Space(stars50K, bounds);
+		ITreeNode<Space> octree = new Tree<Space>(space);
 		octree.build(targetLocation, 7);
 	}
 	
 	@Test
 	public void test50KStarBuildDepth12() {
-		IBoundingBox bounds = BoundingBox.newInstance(stars50K);
-		ISpace space = spaceFactory.produceSpace(stars50K, bounds);
-		ITreeNode<ISpace> octree = new Tree<ISpace>(space);
+		BoundingBox bounds = BoundingBox.newInstance(stars50K);
+		Space space = new Space(stars50K, bounds);
+		ITreeNode<Space> octree = new Tree<Space>(space);
 		octree.build(targetLocation, 12);
 	}
 	
 	@Test
 	public void test50KStarBuildThreshold10() {
-		IBoundingBox bounds = BoundingBox.newInstance(stars50K);
-		ISpace space = spaceFactory.produceSpace(stars50K, bounds);
-		ITreeNode<ISpace> octree = new Tree<ISpace>(space);
+		BoundingBox bounds = BoundingBox.newInstance(stars50K);
+		Space space = new Space(stars50K, bounds);
+		ITreeNode<Space> octree = new Tree<Space>(space);
 		octree.build(targetLocation, 3);
 	}
 	
 	@Test
 	public void test50KStarBuildThreshold100() {
-		IBoundingBox bounds = BoundingBox.newInstance(stars50K);
-		ISpace space = spaceFactory.produceSpace(stars50K, bounds);
-		ITreeNode<ISpace> octree = new Tree<ISpace>(space);
+		BoundingBox bounds = BoundingBox.newInstance(stars50K);
+		Space space = new Space(stars50K, bounds);
+		ITreeNode<Space> octree = new Tree<Space>(space);
 		octree.build(targetLocation, 7);
 	}
 	
 	@Test
 	public void test50KStarBuildThreshold1000() {
-		IBoundingBox bounds = BoundingBox.newInstance(stars50K);
-		ISpace space = spaceFactory.produceSpace(stars50K, bounds);
-		ITreeNode<ISpace> octree = new Tree<ISpace>(space);
+		BoundingBox bounds = BoundingBox.newInstance(stars50K);
+		Space space = new Space(stars50K, bounds);
+		ITreeNode<Space> octree = new Tree<Space>(space);
 		octree.build(targetLocation, 12);
 	}
 

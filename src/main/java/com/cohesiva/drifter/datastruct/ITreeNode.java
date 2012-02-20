@@ -4,6 +4,7 @@
 package com.cohesiva.drifter.datastruct;
 
 import com.cohesiva.drifter.common.Location;
+import com.cohesiva.drifter.split.IComplex;
 
 /**
  * The <code>ITreeNode</code> represents an interface for an abstract tree node.
@@ -28,14 +29,14 @@ public interface ITreeNode<T extends IComplex> {
 	public ITreeNode<T> parent();
 
 	/**
-	 * Gets this node index in parent node.
+	 * Gets the index of this node node against the parent node.
 	 * 
-	 * @return node index in parent
+	 * @return node index against parent
 	 */
 	public int indexInParent();
 	
 	/**
-	 * TODO: 
+	 * Gets this node index.
 	 * 
 	 * @return
 	 */

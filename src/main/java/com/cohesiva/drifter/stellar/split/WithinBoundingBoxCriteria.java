@@ -5,17 +5,22 @@ package com.cohesiva.drifter.stellar.split;
 
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.split.ISplitCriteria;
-import com.cohesiva.drifter.stellar.ISpace;
+import com.cohesiva.drifter.stellar.IBoundingBox;
 
 /**
  * The <code>WithinBoundsCriteria</code> represents an implementation of the
- * split criteria for ISpace. The split criteria evaluates for being inside the
- * given space. An extra padding is included.
+ * split criteria for IBoundingBox. The split criteria evaluates for being
+ * inside the given bounds. An extra padding is included.
  * 
  * @author bkarmelita
  * 
  */
-public class WithinSpaceCriteria implements ISplitCriteria<ISpace> {
+public class WithinBoundingBoxCriteria implements ISplitCriteria<IBoundingBox> {
+
+	/**
+	 * The <code>padding</code> stands for a padding.
+	 */
+	private double padding = 0.1;
 
 	/*
 	 * (non-Javadoc)
@@ -25,9 +30,8 @@ public class WithinSpaceCriteria implements ISplitCriteria<ISpace> {
 	 * .drifter.datastruct.IComplex, com.cohesiva.drifter.common.Location, int)
 	 */
 	@Override
-	public boolean evaluate(ISpace space, Location referenceLocation,
+	public boolean evaluate(IBoundingBox bounds, Location referenceLocation,
 			int threshold) {
-		return space.bounds().splitCriteria().evaluate(space.bounds(), referenceLocation, threshold);
+		return bounds.isSurrounding(referenceLocation, padding);
 	}
-
 }

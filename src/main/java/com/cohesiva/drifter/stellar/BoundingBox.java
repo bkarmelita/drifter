@@ -6,12 +6,11 @@ package com.cohesiva.drifter.stellar;
 import java.util.List;
 
 import com.cohesiva.drifter.common.Location;
-import com.cohesiva.drifter.datastruct.BaseComplex;
-import com.cohesiva.drifter.datastruct.IComplex;
-import com.cohesiva.drifter.datastruct.IOffset;
-import com.cohesiva.drifter.datastruct.ISplitCriteria;
-import com.cohesiva.drifter.datastruct.SplitDegree;
-import com.cohesiva.drifter.stellar.split.WithinBoundsCriteria;
+import com.cohesiva.drifter.split.IComplex;
+import com.cohesiva.drifter.split.IOffset;
+import com.cohesiva.drifter.split.ISplitCriteria;
+import com.cohesiva.drifter.split.SplitDegree;
+import com.cohesiva.drifter.stellar.split.WithinBoundingBoxCriteria;
 
 /**
  * The <code>BoundingBox</code> represents a cubic bounding volume.
@@ -19,13 +18,13 @@ import com.cohesiva.drifter.stellar.split.WithinBoundsCriteria;
  * @author bkarmelita
  * 
  */
-public class BoundingBox extends BaseComplex implements IBoundingBox {
+public class BoundingBox implements IBoundingBox {
 
 	/*
-	 * The <code>DEFAULT_SPLIT_CRITERIA</code> stands for a default space split
-	 * strategy.
+	 * The <code>DEFAULT_SPLIT_CRITERIA</code> stands for a default bounding box
+	 * split strategy.
 	 */
-	private static final ISplitCriteria<BoundingBox> DEFAULT_SPLIT_CRITERIA = new WithinBoundsCriteria();
+	private static final ISplitCriteria<IBoundingBox> DEFAULT_SPLIT_CRITERIA = new WithinBoundingBoxCriteria();
 
 	/**
 	 * The <code>center</code> stands for a center of the cubic bounding volume.
@@ -39,7 +38,12 @@ public class BoundingBox extends BaseComplex implements IBoundingBox {
 	private double radius;
 
 	/**
-	 * Creates the new <code>Bounds</code> instance.
+	 * The <code>depth</code> stands for an origin depth.
+	 */
+	protected int depth;
+
+	/**
+	 * Creates the new <code>BoundingBox</code> instance.
 	 * 
 	 * @param center
 	 * @param radius
@@ -81,7 +85,15 @@ public class BoundingBox extends BaseComplex implements IBoundingBox {
 	 */
 	@Override
 	public int complexity() {
-		return 0;
+		return 0; // bounding box has no complexity
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cohesiva.drifter.datastruct.IComplex#depth()
+	 */
+	@Override
+	public int depth() {
+		return depth;
 	}
 
 	/*
@@ -89,8 +101,10 @@ public class BoundingBox extends BaseComplex implements IBoundingBox {
 	 * 
 	 * @see com.cohesiva.drifter.datastruct.IComplex#splitCriteria()
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
-	public ISplitCriteria<BoundingBox> splitCriteria() {
+	// FIXME: unchecked conversion
+	public ISplitCriteria<IBoundingBox> splitCriteria() {
 		return DEFAULT_SPLIT_CRITERIA;
 	}
 
@@ -102,38 +116,6 @@ public class BoundingBox extends BaseComplex implements IBoundingBox {
 	@Override
 	public SplitDegree splitDegree() {
 		return SplitDegree.OCTANT;
-	}
-
-	/**
-	 * Creates the new subboundingbox for the given offset.
-	 * 
-	 * @param referenceLocation
-	 * @param offset
-	 * @return
-	 */
-	@Override
-	protected IComplex splitOne(Location referenceLocation, IOffset offset) {
-		// {{ compute the offset location relative to this as parent
-		Location centerOffset = offset.offset(this.center().getUnit());
-		centerOffset.multiplyAndStore(this.radius());
-		// }}
-		
-		// create new bounding box for the subsequent child octant
-		BoundingBox bounds = new BoundingBox(this.center.add(centerOffset), this.radius() * IOffset.HALF, this.depth + 1);
-		
-		return bounds;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.cohesiva.drifter.test.datastruct.IComplex#merge(com.cohesiva.drifter
-	 * .datastruct.IComplex)
-	 */
-	@Override
-	public void merge(IComplex part) {
-		// TODO Auto-generated method stub
 	}
 
 	/*
@@ -169,6 +151,63 @@ public class BoundingBox extends BaseComplex implements IBoundingBox {
 		// }}
 
 		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.cohesiva.drifter.datastruct.IComplex#onSplit(com.cohesiva.drifter
+	 * .common.Location, com.cohesiva.drifter.datastruct.IOffset)
+	 */
+	@Override
+	public IComplex onSplit(Location referenceLocation, IOffset offset) {
+		// {{ compute the offset location relative to this as parent
+		Location centerOffset = offset.offset(this.center().getUnit());
+		centerOffset.multiplyAndStore(this.radius());
+		// }}
+
+		// create new bounding box for the subsequent child octant
+		BoundingBox bounds = new BoundingBox(this.center.add(centerOffset),
+				this.radius() * IOffset.HALF, this.depth + 1);
+
+		return bounds;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.cohesiva.drifter.datastruct.IComplex#onMerge(com.cohesiva.drifter
+	 * .common.Location)
+	 */
+	@Override
+	public void onMerge(Location referenceLocation, IComplex mergedWhole) {
+		// TODO: do some basic cleanup
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.cohesiva.drifter.datastruct.IComplex#onSplitComplete(com.cohesiva
+	 * .drifter.common.Location, com.cohesiva.drifter.datastruct.IComplex[])
+	 */
+	@Override
+	public void onSplitComplete(Location referenceLocation, IComplex[] splitted) {
+		// just do nothing
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.cohesiva.drifter.datastruct.IComplex#onMergeComplete(com.cohesiva
+	 * .drifter.common.Location)
+	 */
+	@Override
+	public void onMergeComplete(Location referenceLocation) {
+		// just do nothing
 	}
 
 	/**

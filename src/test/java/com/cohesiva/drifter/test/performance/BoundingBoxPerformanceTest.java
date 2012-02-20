@@ -13,7 +13,10 @@ import org.junit.Test;
 
 import com.cohesiva.drifter.common.DistanceUnit;
 import com.cohesiva.drifter.common.Location;
+import com.cohesiva.drifter.split.IOffset;
+import com.cohesiva.drifter.split.SplitDegree;
 import com.cohesiva.drifter.stellar.BoundingBox;
+import com.cohesiva.drifter.stellar.IBoundingBox;
 import com.cohesiva.drifter.stellar.IStellar;
 import com.cohesiva.drifter.stellar.Star;
 import com.cohesiva.drifter.stellar.StarClass;
@@ -28,8 +31,8 @@ public class BoundingBoxPerformanceTest {
 	
 	private List<IStellar> stars100K = new LinkedList<IStellar>();
 	private List<IStellar> stars50K = new LinkedList<IStellar>();
-	private BoundingBox box100K;
-	private BoundingBox box50K;
+	private IBoundingBox box100K;
+	private IBoundingBox box50K;
 	private Location targetLocation;
 	private Random random = new Random();
 
@@ -75,12 +78,18 @@ public class BoundingBoxPerformanceTest {
 	
 	@Test
 	public void test100KStarsOneSplit() {
-		box100K.split(targetLocation, 0);
+		SplitDegree splitDegree = box100K.splitDegree();
+		for (IOffset offset : splitDegree.offsets()) {
+			box100K.onSplit(targetLocation, offset);
+		}
 	}
 	
 	@Test
 	public void test50KStarsOneSlit() {
-		box50K.split(targetLocation, 0);
+		SplitDegree splitDegree = box100K.splitDegree();
+		for (IOffset offset : splitDegree.offsets()) {
+			box50K.onSplit(targetLocation, offset);
+		}
 	}
 
 }

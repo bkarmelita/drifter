@@ -4,6 +4,9 @@
 package com.cohesiva.drifter.datastruct;
 
 import com.cohesiva.drifter.common.Location;
+import com.cohesiva.drifter.split.IComplex;
+import com.cohesiva.drifter.split.IOffset;
+import com.cohesiva.drifter.split.SplitDegree;
 
 /**
  * The <code>Tree</code> represents the default implementation of the tree.
@@ -101,8 +104,8 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.cohesiva.drifter.test.datastruct.ITreeNode#build(com.cohesiva.drifter
-	 * . common.Location, int, int)
+	 * com.cohesiva.drifter.datastruct.ITreeNode#build(com.cohesiva.drifter.
+	 * common.Location, int, int)
 	 */
 	@Override
 	public void build(Location referenceLocation, int threshold, int maxDepth) {
@@ -130,7 +133,7 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.cohesiva.drifter.test.datastruct.ITreeNode#item()
+	 * @see com.cohesiva.drifter.datastruct.ITreeNode#item()
 	 */
 	@Override
 	public T item() {
@@ -140,7 +143,7 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.cohesiva.drifter.test.datastruct.ITreeNode#children()
+	 * @see com.cohesiva.drifter.datastruct.ITreeNode#children()
 	 */
 	@Override
 	public ITreeNode<T>[] children() {
@@ -150,7 +153,7 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.cohesiva.drifter.test.datastruct.ITreeNode#depth()
+	 * @see com.cohesiva.drifter.datastruct.ITreeNode#depth()
 	 */
 	@Override
 	public int depth() {
@@ -160,7 +163,7 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.cohesiva.drifter.test.datastruct.ITreeNode#isLeaf()
+	 * @see com.cohesiva.drifter.datastruct.ITreeNode#isLeaf()
 	 */
 	@Override
 	public boolean isLeaf() {
@@ -170,7 +173,7 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.cohesiva.drifter.test.datastruct.ITreeNode#parent()
+	 * @see com.cohesiva.drifter.datastruct.ITreeNode#parent()
 	 */
 	@Override
 	public ITreeNode<T> parent() {
@@ -180,29 +183,32 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.cohesiva.drifter.test.datastruct.ITreeNode#indexInParent()
+	 * @see com.cohesiva.drifter.datastruct.ITreeNode#indexInParent()
 	 */
 	@Override
 	public int indexInParent() {
 		return indexInParent;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.cohesiva.drifter.datastruct.ITreeNode#index()
 	 */
 	@Override
 	public int index() {
 		int result = 0;
-		
+
 		int localIndex = this.indexInParent();
-		localIndex = (localIndex << (this.complex.splitDegree().value() * this.depth()));
-		
+		localIndex = (localIndex << (this.complex.splitDegree().value() * this
+				.depth()));
+
 		result += localIndex;
-		
+
 		if (this.parent() != null) {
 			result += this.parent.index();
 		}
-		
+
 		return result;
 	}
 
@@ -210,7 +216,7 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.cohesiva.drifter.test.datastruct.ITreeNode#accept(com.cohesiva.drifter
+	 * com.cohesiva.drifter.datastruct.ITreeNode#accept(com.cohesiva.drifter
 	 * .datastruct.ITreeNodeVisitor)
 	 */
 	@Override
@@ -228,20 +234,35 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.cohesiva.drifter.test.datastruct.ITreeNode#split(com.cohesiva.drifter
-	 * . common.Location)
+	 * com.cohesiva.drifter.datastruct.ITreeNode#split(com.cohesiva.drifter.
+	 * common.Location)
 	 */
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ITreeNode<T>[] split(Location referenceLocation) {
 		if (this.isLeaf()) {
-			// split into subcontents
-			IComplex[] subcontents = complex.split(referenceLocation, this.index());
+			// get the split degree from complex
+			SplitDegree splitDegree = complex.splitDegree();
+			// prepare bounding box placeholders for child octants
+			IComplex[] subcontents = new IComplex[splitDegree.value()];
 
-			// prepare memory for children
+			// {{ iterate through offsets to create subcontents
+			for (IOffset offset : splitDegree.offsets()) {
+				// call split/merge lifecycle to split into new subcomplex
+				IComplex subcomplex = complex
+						.onSplit(referenceLocation, offset);
+				// store subcomplex
+				subcontents[offset.offsetIndex()] = subcomplex;
+			}
+			// }}
+
+			// call split/merge lifecycle to process on complete split
+			complex.onSplitComplete(referenceLocation, subcontents);
+
+			// prepare memory for tree children
 			this.children = new Tree[complex.splitDegree().value()];
 
-			// {{ process each child
+			// {{ create each tree child and store subcomplex inside
 			for (int i = 0; i < this.children.length; i++) {
 				Tree childNode = new Tree(subcontents[i], i, this.depth() + 1);
 				childNode.parent = this;
@@ -257,8 +278,8 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.cohesiva.drifter.test.datastruct.ITreeNode#merge(com.cohesiva.drifter
-	 * . common.Location)
+	 * com.cohesiva.drifter.datastruct.ITreeNode#merge(com.cohesiva.drifter.
+	 * common.Location)
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
@@ -271,10 +292,13 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 				ITreeNode<T> childNode = this.children[i];
 				// merge node
 				T complexPart = childNode.merge(referenceLocation);
-				// merge the merged node content
-				this.complex.merge(complexPart);
+				// call split/merge lifecycle to merge to parent complex
+				complexPart.onMerge(referenceLocation, this.complex);
 			}
 			// }}
+
+			// call split/merge lifecycle to process on merge completion
+			this.complex.onMergeComplete(referenceLocation);
 
 			// {{ free memory for child nodes
 			for (int i = 0; i < this.children.length; i++) {

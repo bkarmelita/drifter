@@ -8,7 +8,7 @@ import java.util.Map;
 
 import com.cohesiva.drifter.datastruct.ITreeNode;
 import com.cohesiva.drifter.datastruct.ITreeNodeVisitor;
-import com.cohesiva.drifter.stellar.ISpace;
+import com.cohesiva.drifter.stellar.Space;
 
 /**
  * The <code>StellarCounter</code> represents an example tree node visitor
@@ -17,7 +17,7 @@ import com.cohesiva.drifter.stellar.ISpace;
  * @author bkarmelita
  * 
  */
-public class StellarCounter implements ITreeNodeVisitor<ISpace> {
+public class StellarCounter implements ITreeNodeVisitor<Space> {
 
 	/**
 	 * The <code>counter</code> stands for the stellar counter.
@@ -37,7 +37,7 @@ public class StellarCounter implements ITreeNodeVisitor<ISpace> {
 	 * .datastruct.ITreeNode)
 	 */
 	@Override
-	public void visit(ITreeNode<ISpace> node) {
+	public void visit(ITreeNode<Space> node) {
 		if (! stellarCounter.containsKey(node.depth())) {
 			stellarCounter.put(node.depth(), 0);
 		}

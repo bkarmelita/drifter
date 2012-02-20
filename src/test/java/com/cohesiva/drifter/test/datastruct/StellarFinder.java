@@ -6,8 +6,8 @@ package com.cohesiva.drifter.test.datastruct;
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.datastruct.ITreeNode;
 import com.cohesiva.drifter.datastruct.ITreeNodeVisitor;
-import com.cohesiva.drifter.stellar.ISpace;
 import com.cohesiva.drifter.stellar.IStellar;
+import com.cohesiva.drifter.stellar.Space;
 
 /**
  * The <code>StellarFinder</code> represents an example Octree node visitor.
@@ -15,7 +15,7 @@ import com.cohesiva.drifter.stellar.IStellar;
  * @author bkarmelita
  * 
  */
-public class StellarFinder implements ITreeNodeVisitor<ISpace> {
+public class StellarFinder implements ITreeNodeVisitor<Space> {
 
 	/**
 	 * The <code>templateLocation</code> stands for a template location to be
@@ -63,13 +63,13 @@ public class StellarFinder implements ITreeNodeVisitor<ISpace> {
 	 * .drifter.datastruct.ITreeNode)
 	 */
 	@Override
-	public void visit(ITreeNode<ISpace> node) {
+	public void visit(ITreeNode<Space> node) {
 		for (IStellar nextStellar : node.item().stellars()) {
 			Location stellarLocation = nextStellar.locate();
 			if (stellarLocation.equals(templateLocation)) {
 				resultDepth = node.depth();
 
-				ITreeNode<ISpace> indexer = node;
+				ITreeNode<Space> indexer = node;
 
 				do {
 					resultIndex = indexer.indexInParent() + resultIndex;
