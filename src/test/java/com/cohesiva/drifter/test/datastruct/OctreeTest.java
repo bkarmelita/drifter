@@ -6,8 +6,6 @@ package com.cohesiva.drifter.test.datastruct;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Random;
-
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -16,11 +14,7 @@ import com.cohesiva.drifter.common.DistanceUnit;
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.datastruct.ITreeNode;
 import com.cohesiva.drifter.datastruct.Tree;
-import com.cohesiva.drifter.split.IOffset;
-import com.cohesiva.drifter.split.SplitDegree;
-import com.cohesiva.drifter.stellar.BoundingBox;
 import com.cohesiva.drifter.stellar.IBoundingBox;
-import com.cohesiva.drifter.stellar.ISpace;
 import com.cohesiva.drifter.stellar.IStellarConstants;
 import com.cohesiva.drifter.stellar.Space;
 import com.cohesiva.drifter.stellar.Star;
@@ -34,7 +28,6 @@ import com.cohesiva.drifter.stellar.StarClass;
  */
 public class OctreeTest {
 	private double galaxyRadius = 50000; 
-	private Random random = new Random();
 	private Location targetLocation = new Location(0, 0, 0, DistanceUnit.LIGHT_YEAR);
 	private Space space;
 	private IBoundingBox box;

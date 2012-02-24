@@ -3,7 +3,6 @@
  */
 package com.cohesiva.drifter.split;
 
-import com.cohesiva.drifter.common.Location;
 
 /**
  * The <code>IComplex</code> represents an interface for an abstract complex
@@ -60,46 +59,42 @@ public interface IComplex {
 	/**
 	 * Split lifecycle callback executed on every single split.
 	 * 
-	 * @param referenceLocation
-	 *            the reference location being considered while splitting
-	 *            (player location)
+	 * @param splitContext
+	 *            the splitting context information (eg. player location)
 	 * @param offset
 	 *            the split offset
 	 * 
 	 * @return the splitted part
 	 */
-	public IComplex onSplit(Location referenceLocation, IOffset offset);
+	public IComplex onSplit(ISplitContext splitContext, IOffset offset);
 
 	/**
 	 * Split lifecycle callback executed on split completion.
 	 * 
-	 * @param referenceLocation
-	 *            the reference location being considered while splitting
-	 *            (player location)
+	 * @param splitContext
+	 *            the splitting context information (eg. player location)
 	 * @param splittedParts
 	 *            the splitted parts
 	 */
-	public void onSplitComplete(Location referenceLocation,
+	public void onSplitComplete(ISplitContext splitContext,
 			IComplex[] splittedParts);
 
 	/**
 	 * Split lifecycle callback executed on every merge.
 	 * 
-	 * @param referenceLocation
-	 *            the reference location being considered while merging (player
-	 *            location)
+	 * @param splitContext
+	 *            the splitting context information (eg. player location)
 	 * @param mergedWhole
 	 *            the merged whole complex
 	 */
-	public void onMerge(Location referenceLocation, IComplex mergedWhole);
+	public void onMerge(ISplitContext splitContext, IComplex mergedWhole);
 
 	/**
 	 * Split lifecycle callback executed on split completion.
 	 * 
-	 * @param referenceLocation
-	 *            the reference location being considered while splitting
-	 *            (player location)
+	 * @param splitContext
+	 *            the splitting context information (eg. player location)
 	 */
-	public void onMergeComplete(Location referenceLocation);
+	public void onMergeComplete(ISplitContext splitContext);
 
 }

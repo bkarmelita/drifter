@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.population.IPopulationStrategy;
 import com.cohesiva.drifter.split.IComplex;
 import com.cohesiva.drifter.split.IOffset;
+import com.cohesiva.drifter.split.ISplitContext;
 import com.cohesiva.drifter.terrain.BoundingSquare;
 import com.cohesiva.drifter.terrain.IBoundingSquare;
 import com.cohesiva.drifter.test.interactive.shapes.Circle;
@@ -49,23 +49,23 @@ public class SquareWithCircles extends BoundingSquare {
 	 * @param depth
 	 * @param square
 	 */
-	public SquareWithCircles(int idx, int depth, Square square) {
-		super(square.getCenter(), square.getWidth()/2, depth);
+	public SquareWithCircles(long idx, int depth, Square square) {
+		super(square.getCenter(), square.getWidth() / 2, depth);
 		this.square = square;
 		this.circles = new ArrayList<Circle>(2);
 		this.random = new Random(idx);
 	}
-	
+
 	/**
 	 * Creates the new <code>SquareWithCircles</code> instance.
-	 *
+	 * 
 	 * @param idx
 	 * @param depth
 	 * @param bounds
 	 */
-	public SquareWithCircles(int idx, int depth, IBoundingSquare bounds) {
+	public SquareWithCircles(long idx, int depth, IBoundingSquare bounds) {
 		super(bounds.center(), bounds.radius(), depth);
-		this.square = new Square(bounds.center(), (int) (2*bounds.radius()));
+		this.square = new Square(bounds.center(), (int) (2 * bounds.radius()));
 		this.circles = new ArrayList<Circle>(2);
 		this.random = new Random(idx);
 	}
@@ -88,13 +88,14 @@ public class SquareWithCircles extends BoundingSquare {
 	 * .common.Location, com.cohesiva.drifter.datastruct.IOffset)
 	 */
 	@Override
-	public IComplex onSplit(Location referenceLocation, IOffset offset) {
+	public IComplex onSplit(ISplitContext ctx, IOffset offset) {
 		// split space bounds first
-		IBoundingSquare subbound = (IBoundingSquare) super.onSplit(referenceLocation, offset);
+		IBoundingSquare subbound = (IBoundingSquare) super.onSplit(ctx, offset);
 		// than split holder
-		SquareWithCircles holder = new SquareWithCircles(1, this.depth + 1, subbound);
+		SquareWithCircles holder = new SquareWithCircles(ctx.index(), this.depth + 1,
+				subbound);
 		// populate
-		POP_STRATEGY.populate(holder, referenceLocation);
+		POP_STRATEGY.populate(holder, ctx.referenceLocation());
 
 		return holder;
 	}
@@ -107,13 +108,12 @@ public class SquareWithCircles extends BoundingSquare {
 	 * .drifter.common.Location, com.cohesiva.drifter.datastruct.IComplex[])
 	 */
 	@Override
-	public void onSplitComplete(Location referenceLocation,
-			IComplex[] splittedParts) {
+	public void onSplitComplete(ISplitContext ctx, IComplex[] splittedParts) {
 		for (Circle circle : this.circles) {
 			for (IOffset offset : this.splitDegree().offsets()) {
 				SquareWithCircles holder = (SquareWithCircles) splittedParts[offset
 						.offsetIndex()];
-				if (holder.isSurrounding(referenceLocation, 0)) {
+				if (holder.isSurrounding(ctx.referenceLocation(), 0)) {
 					((SquareWithCircles) splittedParts[offset.offsetIndex()]).circles
 							.add(circle);
 					break;
@@ -131,7 +131,7 @@ public class SquareWithCircles extends BoundingSquare {
 	 * .common.Location, com.cohesiva.drifter.datastruct.IComplex)
 	 */
 	@Override
-	public void onMerge(Location referenceLocation, IComplex mergedWhole) {
+	public void onMerge(ISplitContext ctx, IComplex mergedWhole) {
 		this.square = null;
 		this.random = null;
 		this.circles.clear();
@@ -146,7 +146,7 @@ public class SquareWithCircles extends BoundingSquare {
 	 * .drifter.common.Location)
 	 */
 	@Override
-	public void onMergeComplete(Location referenceLocation) {
+	public void onMergeComplete(ISplitContext ctx) {
 		// do nothing
 	}
 

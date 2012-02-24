@@ -6,6 +6,7 @@ package com.cohesiva.drifter.datastruct;
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.split.IComplex;
 import com.cohesiva.drifter.split.IOffset;
+import com.cohesiva.drifter.split.ISplitContext;
 import com.cohesiva.drifter.split.SplitDegree;
 
 /**
@@ -109,12 +110,14 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 	 */
 	@Override
 	public void build(Location referenceLocation, int threshold, int maxDepth) {
+		// prepare split context
+		ISplitContext ctx = this.new TreeSplitContext(referenceLocation);
 		// check if we shall go into deep (split / merge)
 		if (complex.splitCriteria().evaluate(complex, referenceLocation,
 				threshold)
 				&& this.depth() < maxDepth) {
 			// we are of high complexity so we try to split ...
-			this.split(referenceLocation);
+			this.split(ctx);
 
 			// {{ .. than recursively build every child
 			for (int i = 0; i < this.children.length; i++) {
@@ -124,7 +127,7 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 			// }}
 		} else {
 			if (this.depth() > 0) {
-				this.merge(referenceLocation);
+				this.merge(ctx);
 			}
 		}
 
@@ -196,17 +199,12 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 	 * @see com.cohesiva.drifter.datastruct.ITreeNode#index()
 	 */
 	@Override
-	public int index() {
-		int result = 0;
-
-		int localIndex = this.indexInParent();
-		localIndex = (localIndex << (this.complex.splitDegree().value() * this
-				.depth()));
-
-		result += localIndex;
-
+	public long index() {
+		long result = this.indexInParent();
+		SplitDegree splitDegree = this.complex.splitDegree();
+		
 		if (this.parent() != null) {
-			result += this.parent.index();
+			result = ((result << (this.depth() + 1) * splitDegree.dimension())) + this.parent().index();
 		}
 
 		return result;
@@ -239,7 +237,7 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 	 */
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public ITreeNode<T>[] split(Location referenceLocation) {
+	public ITreeNode<T>[] split(ISplitContext ctx) {
 		if (this.isLeaf()) {
 			// get the split degree from complex
 			SplitDegree splitDegree = complex.splitDegree();
@@ -249,15 +247,14 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 			// {{ iterate through offsets to create subcontents
 			for (IOffset offset : splitDegree.offsets()) {
 				// call split/merge lifecycle to split into new subcomplex
-				IComplex subcomplex = complex
-						.onSplit(referenceLocation, offset);
+				IComplex subcomplex = complex.onSplit(ctx, offset);
 				// store subcomplex
 				subcontents[offset.offsetIndex()] = subcomplex;
 			}
 			// }}
 
 			// call split/merge lifecycle to process on complete split
-			complex.onSplitComplete(referenceLocation, subcontents);
+			complex.onSplitComplete(ctx, subcontents);
 
 			// prepare memory for tree children
 			this.children = new Tree[complex.splitDegree().value()];
@@ -283,7 +280,7 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public T merge(Location referenceLocation) {
+	public T merge(ISplitContext ctx) {
 		T result = this.complex;
 
 		if (!this.isLeaf()) {
@@ -291,14 +288,14 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 			for (int i = 0; i < this.children.length; i++) {
 				ITreeNode<T> childNode = this.children[i];
 				// merge node
-				T complexPart = childNode.merge(referenceLocation);
+				T complexPart = childNode.merge(ctx);
 				// call split/merge lifecycle to merge to parent complex
-				complexPart.onMerge(referenceLocation, this.complex);
+				complexPart.onMerge(ctx, this.complex);
 			}
 			// }}
 
 			// call split/merge lifecycle to process on merge completion
-			this.complex.onMergeComplete(referenceLocation);
+			this.complex.onMergeComplete(ctx);
 
 			// {{ free memory for child nodes
 			for (int i = 0; i < this.children.length; i++) {
@@ -311,6 +308,44 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 		}
 
 		return result;
+	}
+	
+	/**
+	 * The <code>TreeSplitContext</code> represents the default <code>ISplitCOntext</code> implementation fro tree.
+	 *
+	 * @author bkarmelita
+	 *
+	 */
+	private class TreeSplitContext implements ISplitContext {
+		
+		/**
+		 * The <code>referenceLocation</code> stands for a split location.
+		 */
+		private Location referenceLocation;
+		
+		/**
+		 * Creates the new <code>TreeSplitContext</code> instance.
+		 *
+		 * @param index
+		 * @param offset
+		 * @param referenceLocation
+		 */
+		private TreeSplitContext(Location referenceLocation) {
+			super();
+			
+			this.referenceLocation = referenceLocation;
+		}
+
+		@Override
+		public long index() {
+			return Tree.this.index();
+		}
+
+		@Override
+		public Location referenceLocation() {
+			return referenceLocation;
+		}
+		
 	}
 
 }

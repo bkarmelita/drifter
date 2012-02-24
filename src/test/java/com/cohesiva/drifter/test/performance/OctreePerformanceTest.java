@@ -15,8 +15,6 @@ import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.datastruct.ITreeNode;
 import com.cohesiva.drifter.datastruct.Tree;
 import com.cohesiva.drifter.stellar.BoundingBox;
-import com.cohesiva.drifter.stellar.IBoundingBox;
-import com.cohesiva.drifter.stellar.ISpace;
 import com.cohesiva.drifter.stellar.IStellar;
 import com.cohesiva.drifter.stellar.Space;
 import com.cohesiva.drifter.stellar.Star;

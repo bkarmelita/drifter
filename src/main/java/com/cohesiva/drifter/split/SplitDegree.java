@@ -24,10 +24,16 @@ public enum SplitDegree {
 		public IOffset[] offsets() {
 			return QuarterOffset.values();
 		}
+
+		@Override
+		public int dimension() {
+			return 2;
+		}
+
 	},
 
 	/**
-	 * Being able to split into eight (8) equal pieces.
+	 * Being able to split into eight (2^3) equal pieces.
 	 */
 	OCTANT(8) {
 		
@@ -35,8 +41,16 @@ public enum SplitDegree {
 		public IOffset[] offsets() {
 			return OctantOffset.values();
 		}
+		
+		@Override
+		public int dimension() {
+			return 3;
+		}
 	};
 
+	/**
+	 * The <code>degree</code> stands for a split degree.
+	 */
 	private int degree;
 
 	/**
@@ -64,5 +78,12 @@ public enum SplitDegree {
 	 * @return
 	 */
 	public abstract IOffset[] offsets();
+	
+	/**
+	 * Gets the dimension of this split degree (2D | 3D).
+	 * 
+	 * @return
+	 */
+	public abstract int dimension();
 
 }

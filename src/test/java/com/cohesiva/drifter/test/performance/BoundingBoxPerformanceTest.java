@@ -3,6 +3,8 @@
  */
 package com.cohesiva.drifter.test.performance;
 
+import static org.mockito.Mockito.mock;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -14,6 +16,7 @@ import org.junit.Test;
 import com.cohesiva.drifter.common.DistanceUnit;
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.split.IOffset;
+import com.cohesiva.drifter.split.ISplitContext;
 import com.cohesiva.drifter.split.SplitDegree;
 import com.cohesiva.drifter.stellar.BoundingBox;
 import com.cohesiva.drifter.stellar.IBoundingBox;
@@ -33,12 +36,13 @@ public class BoundingBoxPerformanceTest {
 	private List<IStellar> stars50K = new LinkedList<IStellar>();
 	private IBoundingBox box100K;
 	private IBoundingBox box50K;
-	private Location targetLocation;
+	private ISplitContext ctx;
 	private Random random = new Random();
 
 	@Before
 	public void setUp() {
-		targetLocation = new Location(0, 0, 0, DistanceUnit.LIGHT_YEAR);
+		// mock the split context since BoundingBox does not make much use of it
+		ctx = mock(ISplitContext.class);
 		
 		// {{ generate 100K stars
 		for (int i = 0; i < 100000; i++) {
@@ -80,7 +84,7 @@ public class BoundingBoxPerformanceTest {
 	public void test100KStarsOneSplit() {
 		SplitDegree splitDegree = box100K.splitDegree();
 		for (IOffset offset : splitDegree.offsets()) {
-			box100K.onSplit(targetLocation, offset);
+			box100K.onSplit(ctx, offset);
 		}
 	}
 	
@@ -88,8 +92,10 @@ public class BoundingBoxPerformanceTest {
 	public void test50KStarsOneSlit() {
 		SplitDegree splitDegree = box100K.splitDegree();
 		for (IOffset offset : splitDegree.offsets()) {
-			box50K.onSplit(targetLocation, offset);
+			box50K.onSplit(ctx, offset);
 		}
 	}
+	
+	
 
 }

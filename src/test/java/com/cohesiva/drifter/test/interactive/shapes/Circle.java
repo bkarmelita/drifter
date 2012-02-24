@@ -128,9 +128,9 @@ public class Circle implements IPaintable {
 	@Override
 	public void paint(Graphics graph) {
 		// FIXME: repair it
-		/*Location display = LocationTransform.toDisplayLocation(this.getCenter());
+		Location display = LocationTransform.toDisplayLocation(this.getCenter());
 		graph.setColor(DEFAULT_PAINT);
-		graph.drawOval((int) display.x(), (int) display.y(), radius, radius);*/
+		graph.drawOval((int) display.x(), (int) display.y(), radius, radius);
 	}
 
 }

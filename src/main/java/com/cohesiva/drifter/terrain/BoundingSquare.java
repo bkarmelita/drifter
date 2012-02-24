@@ -6,6 +6,7 @@ package com.cohesiva.drifter.terrain;
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.split.IComplex;
 import com.cohesiva.drifter.split.IOffset;
+import com.cohesiva.drifter.split.ISplitContext;
 import com.cohesiva.drifter.split.ISplitCriteria;
 import com.cohesiva.drifter.split.SplitDegree;
 import com.cohesiva.drifter.terrain.split.WithinBoundingSquareCriteria;
@@ -124,7 +125,7 @@ public class BoundingSquare implements IBoundingSquare {
 	 * .Location, com.cohesiva.drifter.split.IOffset)
 	 */
 	@Override
-	public IComplex onSplit(Location referenceLocation, IOffset offset) {
+	public IComplex onSplit(ISplitContext ctx, IOffset offset) {
 		// {{ compute the offset location relative to this as parent
 		Location centerOffset = offset.offset(this.center().getUnit());
 		centerOffset.multiplyAndStore(this.radius());
@@ -146,8 +147,7 @@ public class BoundingSquare implements IBoundingSquare {
 	 * .common.Location, com.cohesiva.drifter.split.IComplex[])
 	 */
 	@Override
-	public void onSplitComplete(Location referenceLocation,
-			IComplex[] splittedParts) {
+	public void onSplitComplete(ISplitContext ctx, IComplex[] splittedParts) {
 		// just do nothing
 	}
 
@@ -159,7 +159,7 @@ public class BoundingSquare implements IBoundingSquare {
 	 * .Location, com.cohesiva.drifter.split.IComplex)
 	 */
 	@Override
-	public void onMerge(Location referenceLocation, IComplex mergedWhole) {
+	public void onMerge(ISplitContext ctx, IComplex mergedWhole) {
 		// TODO: do some basic cleanup
 	}
 
@@ -171,7 +171,7 @@ public class BoundingSquare implements IBoundingSquare {
 	 * .common.Location)
 	 */
 	@Override
-	public void onMergeComplete(Location referenceLocation) {
+	public void onMergeComplete(ISplitContext ctx) {
 		// just do nothing
 	}
 

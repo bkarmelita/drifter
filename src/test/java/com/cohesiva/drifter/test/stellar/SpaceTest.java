@@ -20,6 +20,7 @@ import org.junit.Test;
 import com.cohesiva.drifter.common.DistanceUnit;
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.split.IOffset;
+import com.cohesiva.drifter.split.ISplitContext;
 import com.cohesiva.drifter.split.SplitDegree;
 import com.cohesiva.drifter.stellar.BoundingBox;
 import com.cohesiva.drifter.stellar.IBoundingBox;
@@ -39,10 +40,13 @@ public class SpaceTest {
 	private IStellar inside;
 	private IStellar outside;
 	private Location targetLocation;
+	private ISplitContext ctx;
 
 	@Before
 	public void setUp() {
 		targetLocation = new Location(0, 0, 0, DistanceUnit.LIGHT_YEAR);
+		// mock the split context cince Space does not make much use of it
+		ctx = mock(ISplitContext.class);
 		
 		start = mock(IStellar.class);
 		when(start.locate()).thenReturn(
@@ -94,9 +98,9 @@ public class SpaceTest {
 		SplitDegree splitDegree = space.splitDegree();
 		ISpace[] splitted = new ISpace[splitDegree.value()];
 		for (IOffset offset : splitDegree.offsets()) {
-			splitted[offset.offsetIndex()] = (ISpace) space.onSplit(targetLocation, offset);
+			splitted[offset.offsetIndex()] = (ISpace) space.onSplit(ctx, offset);
 		}
-		space.onSplitComplete(targetLocation, splitted);
+		space.onSplitComplete(ctx, splitted);
 
 		ISpace frontBottomLeftSpace = splitted[0];
 		IBoundingBox frontBottomLeftBox = frontBottomLeftSpace.bounds();
@@ -150,9 +154,9 @@ public class SpaceTest {
 
 		
 		for (IOffset offset : splitDegree.offsets()) {
-			splitted[offset.offsetIndex()] = (ISpace) frontBottomLeftSpace.onSplit(targetLocation, offset);
+			splitted[offset.offsetIndex()] = (ISpace) frontBottomLeftSpace.onSplit(ctx, offset);
 		}
-		frontBottomLeftSpace.onSplitComplete(targetLocation, splitted);
+		frontBottomLeftSpace.onSplitComplete(ctx, splitted);
 
 		frontBottomLeftSpace = splitted[0];
 		frontBottomLeftBox = frontBottomLeftSpace.bounds();

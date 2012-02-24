@@ -5,6 +5,7 @@ package com.cohesiva.drifter.datastruct;
 
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.split.IComplex;
+import com.cohesiva.drifter.split.ISplitContext;
 
 /**
  * The <code>ITreeNode</code> represents an interface for an abstract tree node.
@@ -34,13 +35,13 @@ public interface ITreeNode<T extends IComplex> {
 	 * @return node index against parent
 	 */
 	public int indexInParent();
-	
+
 	/**
 	 * Gets this node index.
 	 * 
 	 * @return
 	 */
-	public int index();
+	public long index();
 
 	/**
 	 * Gets this node children.
@@ -72,7 +73,7 @@ public interface ITreeNode<T extends IComplex> {
 	 * @param maxDepth
 	 */
 	public void build(Location referenceLocation, int threshold, int maxDepth);
-	
+
 	/**
 	 * Builds this node regarding the reference location.
 	 * 
@@ -80,7 +81,7 @@ public interface ITreeNode<T extends IComplex> {
 	 * @param maxDepth
 	 */
 	public void build(Location referenceLocation, int maxDepth);
-	
+
 	/**
 	 * Builds this node regarding the reference location.
 	 * 
@@ -98,20 +99,18 @@ public interface ITreeNode<T extends IComplex> {
 	/**
 	 * Splits this <code>ITreeNode</code> into subnodes.
 	 * 
-	 * @param referenceLocation
-	 *            the reference location being considered while splitting
-	 *            (player location)
+	 * @param splitContext
+	 *            the splitting context information (eg. player location)
 	 * @return subnodes of this node
 	 */
-	public ITreeNode<T>[] split(Location referenceLocation);
+	public ITreeNode<T>[] split(ISplitContext ctx);
 
 	/**
 	 * Merges this <code>ITreeNode</code> reducing his children.
 	 * 
-	 * @param referenceLocation
-	 *            the reference location being considered while merging (player
-	 *            location)
+	 * @param splitContext
+	 *            the splitting context information (eg. player location)
 	 */
-	public T merge(Location referenceLocation);
+	public T merge(ISplitContext ctx);
 
 }

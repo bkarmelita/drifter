@@ -10,6 +10,7 @@ import java.util.List;
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.split.IComplex;
 import com.cohesiva.drifter.split.IOffset;
+import com.cohesiva.drifter.split.ISplitContext;
 import com.cohesiva.drifter.split.ISplitCriteria;
 import com.cohesiva.drifter.split.SplitDegree;
 import com.cohesiva.drifter.stellar.split.WithinSpaceCriteria;
@@ -36,7 +37,7 @@ public class Space implements ISpace {
 	 * The <code>bounds</code> stands for a bounding box
 	 */
 	protected IBoundingBox bounds;
-	
+
 	/**
 	 * The <code>depth</code> stands for an origin depth.
 	 */
@@ -113,8 +114,10 @@ public class Space implements ISpace {
 	public int complexity() {
 		return this.stellars != null ? this.stellars.size() : 0;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.cohesiva.drifter.datastruct.IComplex#depth()
 	 */
 	@Override
@@ -156,26 +159,34 @@ public class Space implements ISpace {
 		}
 		stellars = null;
 	}
-	
-	/* (non-Javadoc)
-	 * @see com.cohesiva.drifter.datastruct.IComplex#onSplit(com.cohesiva.drifter.common.Location, com.cohesiva.drifter.datastruct.IOffset)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.cohesiva.drifter.datastruct.IComplex#onSplit(com.cohesiva.drifter
+	 * .common.Location, com.cohesiva.drifter.datastruct.IOffset)
 	 */
 	@Override
-	public IComplex onSplit(Location referenceLocation, IOffset offset) {
+	public IComplex onSplit(ISplitContext ctx, IOffset offset) {
 		// split space bounds first
-		IBoundingBox subbound = (IBoundingBox) this.bounds().onSplit(referenceLocation, offset);
+		IBoundingBox subbound = (IBoundingBox) this.bounds().onSplit(ctx,
+				offset);
 		// create new subspace configured with splitted subbounds
 		IComplex subspace = new Space(subbound);
-		
+
 		return subspace;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.cohesiva.drifter.datastruct.IComplex#onSplitComplete(com.cohesiva.drifter.common.Location, com.cohesiva.drifter.datastruct.IComplex[])
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.cohesiva.drifter.datastruct.IComplex#onSplitComplete(com.cohesiva
+	 * .drifter.common.Location, com.cohesiva.drifter.datastruct.IComplex[])
 	 */
 	@Override
-	public void onSplitComplete(Location referenceLocation,
-			IComplex[] splittedParts) {
+	public void onSplitComplete(ISplitContext ctx, IComplex[] splittedParts) {
 		// {{ move the stellars down to subspaces
 		while (this.complexity() > 0) {
 			IStellar stellar = stellars.remove(0);
@@ -190,11 +201,15 @@ public class Space implements ISpace {
 		this.empty();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.cohesiva.drifter.datastruct.IComplex#onMerge(com.cohesiva.drifter.common.Location, com.cohesiva.drifter.datastruct.IComplex)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.cohesiva.drifter.datastruct.IComplex#onMerge(com.cohesiva.drifter
+	 * .common.Location, com.cohesiva.drifter.datastruct.IComplex)
 	 */
 	@Override
-	public void onMerge(Location referenceLocation, IComplex mergedWhole) {
+	public void onMerge(ISplitContext ctx, IComplex mergedWhole) {
 		ISpace spaceWhole = (ISpace) mergedWhole;
 
 		// {{ iterate through stellars
@@ -218,11 +233,15 @@ public class Space implements ISpace {
 		// }}
 	}
 
-	/* (non-Javadoc)
-	 * @see com.cohesiva.drifter.datastruct.IComplex#onMergeComplete(com.cohesiva.drifter.common.Location)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.cohesiva.drifter.datastruct.IComplex#onMergeComplete(com.cohesiva
+	 * .drifter.common.Location)
 	 */
 	@Override
-	public void onMergeComplete(Location referenceLocation) {
+	public void onMergeComplete(ISplitContext ctx) {
 		// just do nothing
 	}
 
