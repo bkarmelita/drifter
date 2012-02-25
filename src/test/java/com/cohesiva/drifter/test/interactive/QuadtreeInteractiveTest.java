@@ -32,7 +32,7 @@ public class QuadtreeInteractiveTest extends Applet {
 	/**
 	 * The <code>DEPTH</code> stands for an octree max depth.
 	 */
-	private static final int MAX_DEPTH = 2;
+	private static final int MAX_DEPTH = 3;
 
 	/**
 	 * The <code>image</code> stands for a painting buffer.
@@ -80,6 +80,14 @@ public class QuadtreeInteractiveTest extends Applet {
 
 	@Override
 	public void paint(Graphics graph) {
+		//TODO pdytkowski: temporary solution begin
+		//create visitor..
+		int size = LocationTransform.SCREEN_SIZE;
+		this.offscreenImage = this.createImage(size, size);
+		offscreen = this.offscreenImage.getGraphics();
+		visitor = new SquareTreePainter(offscreen);
+		//temporary solution end
+		
 		// run visitor
 		quadtree.accept(visitor);
 		// draw offscreen
@@ -94,6 +102,7 @@ public class QuadtreeInteractiveTest extends Applet {
 
 		// rebuild tree
 		quadtree.build(realLoc, 0, MAX_DEPTH);
+		
 		// repaint all
 		this.repaint();
 
