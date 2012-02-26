@@ -27,7 +27,7 @@ import com.cohesiva.drifter.stellar.StarClass;
  * 
  */
 public class OctreeTest {
-	private double galaxyRadius = 50000; 
+	private double galaxyRadius = IStellarConstants.GALAXY_RADIUS.value(); 
 	private Location targetLocation = new Location(0, 0, 0, DistanceUnit.LIGHT_YEAR);
 	private Space space;
 	private IBoundingBox box;
@@ -74,6 +74,15 @@ public class OctreeTest {
 		assertEquals(0, counter.stellarCount(1));
 		// there should be no star at the 2 level
 		assertEquals(8, counter.stellarCount(2));
+	}
+	
+	@Test
+	public void testIndex() {
+		ITreeNode<Space> octree = new Tree<Space>(space);
+		octree.build(targetLocation, 2);
+
+		TreeIndexVerifier idxVerifier = new TreeIndexVerifier();
+		octree.accept(idxVerifier);
 	}
 
 	@Test

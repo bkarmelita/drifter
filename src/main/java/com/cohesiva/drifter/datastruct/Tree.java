@@ -204,7 +204,9 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 		SplitDegree splitDegree = this.complex.splitDegree();
 		
 		if (this.parent() != null) {
-			result = ((result << (this.depth() + 1) * splitDegree.dimension())) + this.parent().index();
+			int bitsToShift = (this.depth() - 1) * splitDegree.dimension();
+			result = result << bitsToShift;
+			result = result + this.parent().index();
 		}
 
 		return result;
