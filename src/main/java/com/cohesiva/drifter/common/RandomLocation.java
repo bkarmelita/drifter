@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Simpatico.
+ * Copyright 2011 cohesiva.com.
  */
 package com.cohesiva.drifter.common;
 
@@ -37,14 +37,14 @@ public class RandomLocation extends Location {
 	}
 	
 	/**
-	 * TODO:
+	 * Randomizes the value within a given range.
 	 * 
 	 * @param min
 	 * @param max
 	 * @return
 	 */
 	private double randomizeRange(double min, double max, Random random) {
-		double rand = min + random.nextDouble() * ((max - min) + 1);
+		double rand = min + random.nextDouble() * (max - min);
 		
 		return rand;
 	}

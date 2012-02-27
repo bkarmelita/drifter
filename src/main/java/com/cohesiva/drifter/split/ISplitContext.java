@@ -15,11 +15,19 @@ import com.cohesiva.drifter.common.Location;
 public interface ISplitContext {
 	
 	/**
-	 * Returns the splitting index (the index of a node being split).
+	 * Returns the node splitting index (the index of a node being split).
 	 * 
 	 * @return
 	 */
 	public long index();
+	
+	/**
+	 * Returns the node subindex based on current context index and the given splitting offset.
+	 * 
+	 * @param offset
+	 * @return
+	 */
+	public long subindex(IOffset offset);
 	
 	/**
 	 * Returns the splitting reference location.

@@ -4,6 +4,7 @@
 package com.cohesiva.drifter.test.interactive;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -92,9 +93,10 @@ public class SquareWithCircles extends BoundingSquare {
 		// split space bounds first
 		IBoundingSquare subbound = (IBoundingSquare) super.onSplit(ctx, offset);
 		// than split holder
-		SquareWithCircles holder = new SquareWithCircles(ctx.index(), this.depth + 1,
+		SquareWithCircles holder = new SquareWithCircles(ctx.subindex(offset), this.depth + 1,
 				subbound);
-		// populate
+		
+		// populate new circles
 		POP_STRATEGY.populate(holder, ctx.referenceLocation());
 
 		return holder;
@@ -109,18 +111,23 @@ public class SquareWithCircles extends BoundingSquare {
 	 */
 	@Override
 	public void onSplitComplete(ISplitContext ctx, IComplex[] splittedParts) {
-		for (Circle circle : this.circles) {
+		// {{ distribute all circles to splitted complexes
+		for (Iterator<Circle> iter = this.circles.iterator(); iter.hasNext(); ) {
+			Circle circle = iter.next();
+			
 			for (IOffset offset : this.splitDegree().offsets()) {
 				SquareWithCircles holder = (SquareWithCircles) splittedParts[offset
 						.offsetIndex()];
 				if (holder.isSurrounding(ctx.referenceLocation(), 0)) {
-					((SquareWithCircles) splittedParts[offset.offsetIndex()]).circles
-							.add(circle);
+					holder.circles.add(circle);
+					iter.remove();
+					
 					break;
 				}
 
 			}
 		}
+		// }}
 	}
 
 	/*
@@ -132,9 +139,28 @@ public class SquareWithCircles extends BoundingSquare {
 	 */
 	@Override
 	public void onMerge(ISplitContext ctx, IComplex mergedWhole) {
+		SquareWithCircles wholeComplex = ((SquareWithCircles) mergedWhole);
+		
+		// {{ give the circles back to merged whole
+		for (Iterator<Circle> iter = this.circles.iterator(); iter.hasNext(); ) {
+			Circle circle = iter.next();
+			int originDepth = CirclePopulationStrategy.originDepth(circle);
+			
+			if (originDepth <= wholeComplex.depth()) {
+				wholeComplex.circles.add(circle);
+				iter.remove();
+			}
+			
+		}
+
+		this.circles.clear();
+		// }}
+		
+		// reset random
+		wholeComplex.random = new Random(ctx.index());
+		
 		this.square = null;
 		this.random = null;
-		this.circles.clear();
 		this.circles = null;
 	}
 

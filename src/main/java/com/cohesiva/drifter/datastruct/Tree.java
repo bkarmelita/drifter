@@ -198,17 +198,34 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 	 * 
 	 * @see com.cohesiva.drifter.datastruct.ITreeNode#index()
 	 */
+	// TODO: check it in JUnit
 	@Override
 	public long index() {
 		long result = this.indexInParent();
 		SplitDegree splitDegree = this.complex.splitDegree();
-		
+
 		if (this.parent() != null) {
 			int bitsToShift = (this.depth() - 1) * splitDegree.dimension();
 			result = result << bitsToShift;
 			result = result + this.parent().index();
 		}
 
+		return result;
+	}
+	
+	/**
+	 * TODO: experimental, check it in JUnit
+	 * @param offset
+	 * @return
+	 */
+	protected long subindex(IOffset offset) {
+		long result = this.index();
+		SplitDegree splitDegree = this.complex.splitDegree();
+		
+		int bitsToShift = (this.depth() + 1) * splitDegree.dimension();
+		int offsetIndex = offset.offsetIndex() << bitsToShift;
+		result += offsetIndex;
+		
 		return result;
 	}
 
@@ -311,30 +328,31 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 
 		return result;
 	}
-	
+
 	/**
-	 * The <code>TreeSplitContext</code> represents the default <code>ISplitCOntext</code> implementation fro tree.
-	 *
+	 * The <code>TreeSplitContext</code> represents the default
+	 * <code>ISplitCOntext</code> implementation fro tree.
+	 * 
 	 * @author bkarmelita
-	 *
+	 * 
 	 */
 	private class TreeSplitContext implements ISplitContext {
-		
+
 		/**
 		 * The <code>referenceLocation</code> stands for a split location.
 		 */
 		private Location referenceLocation;
-		
+
 		/**
 		 * Creates the new <code>TreeSplitContext</code> instance.
-		 *
+		 * 
 		 * @param index
 		 * @param offset
 		 * @param referenceLocation
 		 */
 		private TreeSplitContext(Location referenceLocation) {
 			super();
-			
+
 			this.referenceLocation = referenceLocation;
 		}
 
@@ -344,10 +362,15 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 		}
 
 		@Override
+		public long subindex(IOffset offset) {
+			return Tree.this.subindex(offset);
+		}
+
+		@Override
 		public Location referenceLocation() {
 			return referenceLocation;
 		}
-		
+
 	}
 
 }
