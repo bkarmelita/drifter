@@ -3,6 +3,8 @@
  */
 package com.cohesiva.drifter.split;
 
+import com.cohesiva.drifter.stellar.IStellar;
+
 
 /**
  * The <code>IComplex</code> represents an interface for an abstract complex
@@ -13,23 +15,16 @@ package com.cohesiva.drifter.split;
  * The <code>ISpace</code> and <code>IBoundingBox</code> are examples of
  * <code>IComplex</code>.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
-public interface IComplex {
+public interface IComplex extends IStellar {
 
 	/*
 	 * The <code>DEFAULT_SPLIT_CRITERIA</code> stands for a default IComplex
 	 * split criteria.
 	 */
 	public static final ISplitCriteria<IComplex> DEFAULT_SPLIT_CRITERIA = new ThresholdSplitCriteria<IComplex>();
-
-	/**
-	 * Get the origin depth of this complex.
-	 * 
-	 * @return
-	 */
-	public int depth();
 
 	/**
 	 * Gets the split degree

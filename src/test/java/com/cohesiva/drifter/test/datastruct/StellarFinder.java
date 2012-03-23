@@ -12,7 +12,7 @@ import com.cohesiva.drifter.stellar.Space;
 /**
  * The <code>StellarFinder</code> represents an example Octree node visitor.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class StellarFinder implements ITreeNodeVisitor<Space> {

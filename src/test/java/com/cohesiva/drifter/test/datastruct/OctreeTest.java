@@ -23,7 +23,7 @@ import com.cohesiva.drifter.stellar.StarClass;
 /**
  * The <code>OctreeTest</code> represents octree test.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class OctreeTest {

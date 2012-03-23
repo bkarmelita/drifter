@@ -16,7 +16,7 @@ import com.cohesiva.drifter.common.Location;
 /**
  * The <code>LocationPerformanceTest</code> represents a location unit performance test.
  * 
- * @author bkarmelita
+ * @author carmel
  */
 public class LocationPerformanceTest {
 	

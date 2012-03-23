@@ -14,7 +14,7 @@ import com.cohesiva.drifter.terrain.split.WithinBoundingSquareCriteria;
 /**
  * The <code>BoundingSquare</code> represents a rectangular bounding area.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class BoundingSquare implements IBoundingSquare {
@@ -93,6 +93,14 @@ public class BoundingSquare implements IBoundingSquare {
 	@Override
 	public int depth() {
 		return depth;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cohesiva.drifter.stellar.IStellar#locate()
+	 */
+	@Override
+	public Location locate() {
+		return center();
 	}
 
 	/*

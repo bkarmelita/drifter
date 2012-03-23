@@ -8,13 +8,13 @@ import java.awt.Graphics;
 
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.test.interactive.IPaintable;
-import com.cohesiva.drifter.test.interactive.LocationTransform;
+import com.cohesiva.drifter.view.awt.LocationTransform;
 
 
 /**
  * The <code>Rect</code> class defines a rectangle.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class Rect implements IPaintable {

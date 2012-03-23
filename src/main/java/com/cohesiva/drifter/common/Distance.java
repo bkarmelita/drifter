@@ -6,7 +6,7 @@ package com.cohesiva.drifter.common;
 /**
  * The <code>Distance</code> represents a spatial distance.
  * 
- * @author bkarmelita
+ * @author carmel
  */
 public class Distance {
 

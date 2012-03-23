@@ -8,12 +8,12 @@ import java.awt.Graphics;
 import com.cohesiva.drifter.common.DistanceUnit;
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.test.interactive.IPaintable;
-import com.cohesiva.drifter.test.interactive.LocationTransform;
+import com.cohesiva.drifter.view.awt.LocationTransform;
 
 /**
  * The <code>Circle</code> defines a circle.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class Circle implements IPaintable {

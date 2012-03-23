@@ -8,27 +8,27 @@ import com.cohesiva.drifter.common.Location;
 
 /**
  * The <code>IOffset</code> represents an abstract splitting offset.
- *
- * @author bkarmelita
- *
+ * 
+ * @author carmel
+ * 
  */
 public interface IOffset {
-	
+
 	/*
 	 * The <code>HALF</code> stands for a splitting factor.
 	 */
 	public static final double HALF = 0.5;
-	
+
 	/**
-	 * Gives an offset location of the given source location
+	 * Gives a unit offset location for this offset.
 	 * 
-	 * @param source 
+	 * @param source
 	 * @return
 	 */
 	public Location offset(DistanceUnit unit);
-	
+
 	/**
-	 * Gives an offset index.
+	 * Gives an offset index. Index corresponds to the offset ordering.
 	 * 
 	 * @return the offset index
 	 */

@@ -8,7 +8,7 @@ import com.cohesiva.drifter.common.Location;
 /**
  * The <code>IStellarConstants</code> encapsulates globally used stellar constants.
  * 
- * @author bkarmelita
+ * @author carmel
  *
  */
 public interface IStellarConstants {

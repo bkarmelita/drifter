@@ -8,7 +8,7 @@ import java.util.Random;
 /**
  * The <code>RandomLocation</code> represents the random spatial location. 
  *
- * @author bkarmelita
+ * @author carmel
  *
  */
 public class RandomLocation extends Location {

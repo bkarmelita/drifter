@@ -10,7 +10,7 @@ import com.cohesiva.drifter.common.Location;
  * The <code>OctantOffset</code> represents a splitting offset enumeration for
  * an octant split degree (cubes).
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public enum OctantOffset implements IOffset {
@@ -19,7 +19,7 @@ public enum OctantOffset implements IOffset {
 	 * The <code></code> represents a front bottom left splitting offset
 	 * location.
 	 * 
-	 * @author bkarmelita
+	 * @author carmel
 	 * 
 	 */
 	FRONT_BOTTOM_LEFT() {
@@ -34,7 +34,7 @@ public enum OctantOffset implements IOffset {
 	 * The <code></code> represents a front bottom rigth splitting offset
 	 * location.
 	 * 
-	 * @author bkarmelita
+	 * @author carmel
 	 * 
 	 */
 	FRONT_BOTTOM_RIGHT() {
@@ -48,7 +48,7 @@ public enum OctantOffset implements IOffset {
 	/**
 	 * The <code></code> represents a front top left splitting offset location.
 	 * 
-	 * @author bkarmelita
+	 * @author carmel
 	 * 
 	 */
 	FRONT_TOP_LEFT() {
@@ -62,7 +62,7 @@ public enum OctantOffset implements IOffset {
 	/**
 	 * The <code></code> represents a front top right splitting offset location.
 	 * 
-	 * @author bkarmelita
+	 * @author carmel
 	 * 
 	 */
 	FRONT_TOP_RIGHT() {
@@ -78,7 +78,7 @@ public enum OctantOffset implements IOffset {
 	 * The <code></code> represents a rear bottom left splitting offset
 	 * location.
 	 * 
-	 * @author bkarmelita
+	 * @author carmel
 	 * 
 	 */
 	REAR_BOTTOM_LEFT() {
@@ -94,7 +94,7 @@ public enum OctantOffset implements IOffset {
 	 * The <code></code> represents a rear bottom right splitting offset
 	 * location.
 	 * 
-	 * @author bkarmelita
+	 * @author carmel
 	 * 
 	 */
 	REAR_BOTTOM_RIGHT() {
@@ -109,7 +109,7 @@ public enum OctantOffset implements IOffset {
 	/**
 	 * The <code></code> represents a rear top left splitting offset location.
 	 * 
-	 * @author bkarmelita
+	 * @author carmel
 	 * 
 	 */
 	REAR_TOP_LEFT() {
@@ -123,7 +123,7 @@ public enum OctantOffset implements IOffset {
 	/**
 	 * The <code></code> represents a rear top right splitting offset location.
 	 * 
-	 * @author bkarmelita
+	 * @author carmel
 	 * 
 	 */
 	REAR_TOP_RIGHT() {

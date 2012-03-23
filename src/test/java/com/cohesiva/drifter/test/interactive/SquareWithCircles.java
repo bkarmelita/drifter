@@ -22,7 +22,7 @@ import com.cohesiva.drifter.test.interactive.shapes.Square;
  * <code>IComplex</code>. This complex consists of Square and few Circles. The
  * circles are being populated while split.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class SquareWithCircles extends BoundingSquare {
@@ -141,7 +141,7 @@ public class SquareWithCircles extends BoundingSquare {
 	public void onMerge(ISplitContext ctx, IComplex mergedWhole) {
 		SquareWithCircles wholeComplex = ((SquareWithCircles) mergedWhole);
 		
-		// {{ give the circles back to merged whole
+		// {{ give the circles back to merged complex
 		for (Iterator<Circle> iter = this.circles.iterator(); iter.hasNext(); ) {
 			Circle circle = iter.next();
 			int originDepth = CirclePopulationStrategy.originDepth(circle);
@@ -159,9 +159,11 @@ public class SquareWithCircles extends BoundingSquare {
 		// reset random
 		wholeComplex.random = new Random(ctx.index());
 		
+		// {{ mark for garbage collection
 		this.square = null;
 		this.random = null;
 		this.circles = null;
+		// }}
 	}
 
 	/*

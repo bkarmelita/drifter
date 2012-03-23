@@ -10,7 +10,7 @@ import com.cohesiva.drifter.common.Location;
 /**
  * The <code>Square</code> represents a square.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class Square extends Rect {

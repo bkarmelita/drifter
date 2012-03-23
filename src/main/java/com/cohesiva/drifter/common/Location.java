@@ -6,7 +6,7 @@ package com.cohesiva.drifter.common;
 /**
  * The <code>Location</code> represents a spatial location.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class Location {

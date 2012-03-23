@@ -9,7 +9,7 @@ import com.cohesiva.drifter.common.Location;
  * The <code>ISpatial</code> represents any stellar entity (star) with its
  * spatial location.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public interface IStellar {

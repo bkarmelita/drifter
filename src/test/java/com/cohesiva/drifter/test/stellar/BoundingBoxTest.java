@@ -25,7 +25,7 @@ import com.cohesiva.drifter.stellar.IStellar;
 /**
  * The <code>SpaceTest</code> represents the bounding box unit test.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class BoundingBoxTest {

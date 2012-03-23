@@ -8,7 +8,7 @@ package com.cohesiva.drifter.stellar;
  * 
  * Gives an average star density at the given depth level.
  * 
- * @author bkarmelita
+ * @author carmel
  */
 public interface IStarDensity {
 

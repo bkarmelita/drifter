@@ -10,7 +10,7 @@ import com.cohesiva.drifter.common.Location;
  * for every complex. The split criteria evaluates not to exceed the complexity
  * over the given threshold.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class ThresholdSplitCriteria<T extends IComplex> implements

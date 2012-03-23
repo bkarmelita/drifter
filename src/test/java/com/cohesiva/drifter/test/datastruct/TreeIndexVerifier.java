@@ -10,7 +10,7 @@ import com.cohesiva.drifter.stellar.Space;
 /**
  * The <code>TreeIndexVerifier</code> represents ... TODO
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class TreeIndexVerifier implements ITreeNodeVisitor<Space> {

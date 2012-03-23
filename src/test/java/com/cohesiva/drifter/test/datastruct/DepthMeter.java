@@ -10,7 +10,7 @@ import com.cohesiva.drifter.stellar.Space;
 /**
  * TODO: 
  * 
- * @author bkarmelita
+ * @author carmel
  *
  */
 public class DepthMeter implements ITreeNodeVisitor<Space> {

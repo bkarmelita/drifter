@@ -10,7 +10,7 @@ import com.cohesiva.drifter.common.Location;
  * The <code>QuarterOffset</code> represents a splitting offset enumeration for
  * a quarter split degree (squares).
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public enum QuarterOffset implements IOffset {
@@ -18,7 +18,7 @@ public enum QuarterOffset implements IOffset {
 	/**
 	 * The <code></code> represents a front bottom left splitting offset square.
 	 * 
-	 * @author bkarmelita
+	 * @author carmel
 	 * 
 	 */
 	BOTTOM_LEFT() {
@@ -31,7 +31,7 @@ public enum QuarterOffset implements IOffset {
 	/**
 	 * The <code></code> represents a bottom right splitting offset square.
 	 * 
-	 * @author bkarmelita
+	 * @author carmel
 	 * 
 	 */
 	BOTTOM_RIGHT() {
@@ -44,7 +44,7 @@ public enum QuarterOffset implements IOffset {
 	/**
 	 * The <code></code> represents a top left splitting offset square.
 	 * 
-	 * @author bkarmelita
+	 * @author carmel
 	 * 
 	 */
 	TOP_LEFT() {
@@ -57,7 +57,7 @@ public enum QuarterOffset implements IOffset {
 	/**
 	 * The <code></code> represents a bottom right splitting offset square.
 	 * 
-	 * @author bkarmelita
+	 * @author carmel
 	 * 
 	 */
 	TOP_RIGHT() {

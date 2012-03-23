@@ -12,7 +12,7 @@ import com.cohesiva.drifter.terrain.IBoundingSquare;
  * the split criteria for IBoundingSquare. The split criteria evaluates for
  * being inside the given bounds. An extra padding is included.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class WithinBoundingSquareCriteria implements

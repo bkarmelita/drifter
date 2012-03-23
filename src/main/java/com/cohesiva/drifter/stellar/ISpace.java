@@ -13,7 +13,7 @@ import com.cohesiva.drifter.split.IComplex;
  * <code>ISpace</code> is surrounded with the <code>IBoundingBox</code> that
  * assings its bounds.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public interface ISpace extends IComplex {

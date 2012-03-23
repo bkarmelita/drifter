@@ -8,7 +8,7 @@ import com.cohesiva.drifter.common.Location;
 /**
  * The <code>Start</code> represents the star.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class Star implements IStellar {

@@ -13,21 +13,20 @@ import com.cohesiva.drifter.test.interactive.shapes.Circle;
  * The <code>CirclePopulationStrategy</code> represents an example of simple
  * population strategy.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class CirclePopulationStrategy implements
 		IPopulationStrategy<SquareWithCircles> {
 
-	private static final int[] CIRCE_RADIUS_BY_DEPTH = new int[] { 50, // for
-																		// level
-																		// 0
+	private static final int[] CIRCE_RADIUS_BY_DEPTH = new int[] {
+			50, // for level 0
 			30, // for level 1
 			20, // for level 2
 			10, // for level 3
-			5, // for level 4
-			2, // for level 5
-			1, // for level 6
+			5,  // for level 4
+			2,  // for level 5
+			1,  // for level 6
 	};
 
 	@Override
@@ -50,25 +49,17 @@ public class CirclePopulationStrategy implements
 				DistanceUnit.LIGHT_YEAR);
 		Location maxLocation = new Location(maxx, maxy, 0,
 				DistanceUnit.LIGHT_YEAR);
-		// }}
-
-		// populate 1 new circle per square
-		//square.circles.add(new Circle(minLocation, CIRCE_RADIUS_BY_DEPTH[idx]));
-		//square.circles.add(new Circle(maxLocation, CIRCE_RADIUS_BY_DEPTH[idx]));
 		Location randomLocation = new RandomLocation(minLocation,
 				maxLocation, square.random);
-		square.circles.add(new Circle(randomLocation,
-				CIRCE_RADIUS_BY_DEPTH[idx]));
-		/*for (int count = 1; count <= 1; count++) {
-			Location randomLocation = new RandomLocation(minLocation,
-					maxLocation, square.random);
-			square.circles.add(new Circle(randomLocation,
-					CIRCE_RADIUS_BY_DEPTH[idx]));
-		}*/
+		// }}
+
+		// populate 1 new circle
+		square.circles.add(new Circle(randomLocation, CIRCE_RADIUS_BY_DEPTH[idx]));
 	}
 
 	/**
 	 * Compute origin depth of the given circle.
+	 * Just a helper method. Normally populated elements should know its origin depth.
 	 * 
 	 * @param circle
 	 * @return circle origin depth

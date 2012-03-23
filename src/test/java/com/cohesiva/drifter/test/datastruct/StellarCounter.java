@@ -14,7 +14,7 @@ import com.cohesiva.drifter.stellar.Space;
  * The <code>StellarCounter</code> represents an example tree node visitor
  * counting stellars.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class StellarCounter implements ITreeNodeVisitor<Space> {

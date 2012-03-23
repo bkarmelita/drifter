@@ -18,7 +18,7 @@ import com.cohesiva.drifter.stellar.split.WithinSpaceCriteria;
 /**
  * The <code>Space</code> represents the default universe implementation.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class Space implements ISpace {
@@ -123,6 +123,14 @@ public class Space implements ISpace {
 	@Override
 	public int depth() {
 		return depth;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cohesiva.drifter.stellar.IStellar#locate()
+	 */
+	@Override
+	public Location locate() {
+		return bounds.locate();
 	}
 
 	/*

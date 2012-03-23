@@ -9,7 +9,7 @@ import com.cohesiva.drifter.common.Location;
  * The <code>ISplitCriteria</code> defines an interface for an abstract split
  * criteria.
  * 
- * @author bkarmelita
+ * @author carmel
  */
 public interface ISplitCriteria<T extends IComplex> {
 

@@ -31,7 +31,7 @@ import com.cohesiva.drifter.stellar.Space;
 /**
  * The <code>SpaceTest</code> represents a space unit test.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class SpaceTest {

@@ -8,7 +8,7 @@ package com.cohesiva.drifter.common;
  * space can be measured by light years or kilometers. At the galaxy level we
  * use light years. At the star system level we use kilometers.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public enum DistanceUnit {

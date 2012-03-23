@@ -28,7 +28,7 @@ import com.cohesiva.drifter.stellar.StarClass;
  * The <code>BoundingBoxPerformanceTest</code> represents a bounds unit
  * performance test.
  * 
- * @author bkarmelita
+ * @author carmel
  */
 public class BoundingBoxPerformanceTest {
 	

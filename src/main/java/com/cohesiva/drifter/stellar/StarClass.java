@@ -8,7 +8,7 @@ package com.cohesiva.drifter.stellar;
  * Harvard spectral classification:
  * http://en.wikipedia.org/wiki/Stellar_classification
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public enum StarClass {

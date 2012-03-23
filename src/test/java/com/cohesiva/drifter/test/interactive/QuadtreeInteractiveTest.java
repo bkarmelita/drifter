@@ -13,12 +13,13 @@ import com.cohesiva.drifter.common.DistanceUnit;
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.datastruct.Tree;
 import com.cohesiva.drifter.test.interactive.shapes.Square;
+import com.cohesiva.drifter.view.awt.LocationTransform;
 
 /**
  * The <code>QuadtreeInteractiveTest</code> represents an interactive test of a
  * quadtree implementation.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class QuadtreeInteractiveTest extends Applet {
@@ -115,7 +116,7 @@ public class QuadtreeInteractiveTest extends Applet {
 	 * @param graph
 	 */
 	private void initQuadtree(Graphics graph) {
-		// we arbitrary start at 50,50
+		// we arbitrarily start at 50,50
 		refLoc = new Location(50, 50, 0, DistanceUnit.LIGHT_YEAR);
 		// center is at 0,0 obviously
 		Location centerLoc = new Location(0, 0, 0, DistanceUnit.LIGHT_YEAR);

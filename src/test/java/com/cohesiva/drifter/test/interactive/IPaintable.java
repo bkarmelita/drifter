@@ -9,7 +9,7 @@ import java.awt.Graphics;
 /**
  * The <code>IPaintable</code> represents a paintable shape.
  * 
- * @author bkarmelita
+ * @author carmel
  */
 public interface IPaintable {
 	

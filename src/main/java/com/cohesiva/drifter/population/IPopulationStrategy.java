@@ -10,7 +10,7 @@ import com.cohesiva.drifter.split.IComplex;
  * The <code>IPopulationStrategy</code> defines an interface for the population
  * strategy.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public interface IPopulationStrategy<T extends IComplex> {

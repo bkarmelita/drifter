@@ -11,7 +11,7 @@ import com.cohesiva.drifter.split.IComplex;
  * for complex where nothing is populated. This strategy is the default for
  * every complex.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class NoPopulationStrategy implements IPopulationStrategy<IComplex> {

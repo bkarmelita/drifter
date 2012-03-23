@@ -7,7 +7,7 @@ package com.cohesiva.drifter.stellar;
  * The <code>StarColor</code> represents a star color enumeration. The
  * <code>StarColor</code> reflects how the star is being displayed.
  * 
- * @author bkarmelita
+ * @author carmel
  */
 public enum StarColor {
 

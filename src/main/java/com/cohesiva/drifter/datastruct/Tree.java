@@ -12,7 +12,7 @@ import com.cohesiva.drifter.split.SplitDegree;
 /**
  * The <code>Tree</code> represents the default implementation of the tree.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class Tree<T extends IComplex> implements ITreeNode<T> {
@@ -333,7 +333,7 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 	 * The <code>TreeSplitContext</code> represents the default
 	 * <code>ISplitCOntext</code> implementation fro tree.
 	 * 
-	 * @author bkarmelita
+	 * @author carmel
 	 * 
 	 */
 	private class TreeSplitContext implements ISplitContext {

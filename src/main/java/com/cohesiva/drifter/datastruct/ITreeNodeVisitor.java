@@ -11,7 +11,7 @@ import com.cohesiva.drifter.split.IComplex;
  * walker. Visitor responsibility is to visit each tree node to check some
  * things and report them.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public interface ITreeNodeVisitor<T extends IComplex> {

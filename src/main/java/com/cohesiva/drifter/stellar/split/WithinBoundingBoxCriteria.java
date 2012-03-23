@@ -12,7 +12,7 @@ import com.cohesiva.drifter.stellar.IBoundingBox;
  * split criteria for IBoundingBox. The split criteria evaluates for being
  * inside the given bounds. An extra padding is included.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class WithinBoundingBoxCriteria implements ISplitCriteria<IBoundingBox> {

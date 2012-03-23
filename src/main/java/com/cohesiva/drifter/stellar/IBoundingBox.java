@@ -10,7 +10,7 @@ import com.cohesiva.drifter.split.IComplex;
  * The <code>IBoundingBox</code> defines an interface for the cubic bounding
  * volume.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public interface IBoundingBox extends IComplex {

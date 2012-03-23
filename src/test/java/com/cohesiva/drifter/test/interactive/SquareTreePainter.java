@@ -16,7 +16,7 @@ import com.cohesiva.drifter.test.interactive.shapes.Square;
  * The <code>SquareTreePainter</code> represents a square quadtree painter
  * visitor.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class SquareTreePainter implements ITreeNodeVisitor<SquareWithCircles> {

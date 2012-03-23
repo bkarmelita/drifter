@@ -10,7 +10,7 @@ package com.cohesiva.drifter.split;
  * split degree in an octree structure modeling the galaxy. Quarter split degree
  * will be used in a quadtree when modeling surface.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public enum SplitDegree {

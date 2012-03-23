@@ -12,7 +12,7 @@ import com.cohesiva.drifter.stellar.ISpace;
  * split criteria for ISpace. The split criteria evaluates for being inside the
  * given space. An extra padding is included.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class WithinSpaceCriteria implements ISplitCriteria<ISpace> {

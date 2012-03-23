@@ -10,7 +10,7 @@ import com.cohesiva.drifter.common.Location;
  * that computes the probability of a successful jump to the star. Star mass and
  * distance to the star are essential factors of computation.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public interface IStarJumpProbability {

@@ -10,7 +10,7 @@ import com.cohesiva.drifter.split.ISplitContext;
 /**
  * The <code>ITreeNode</code> represents an interface for an abstract tree node.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public interface ITreeNode<T extends IComplex> {

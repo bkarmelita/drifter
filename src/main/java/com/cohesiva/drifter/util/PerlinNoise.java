@@ -11,7 +11,7 @@ package com.cohesiva.drifter.util;
  * 
  * FUTURE: We will need this ion every aspect of terrain generation.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class PerlinNoise {

@@ -9,7 +9,7 @@ import com.cohesiva.drifter.common.Location;
  * The <code>ISplitContext</code> defines an interface for a context of splitting.
  * The split context serves as a placeholder for information to share between ITreeNode and IComplex.
  *
- * @author bkarmelita
+ * @author carmel
  *
  */
 public interface ISplitContext {

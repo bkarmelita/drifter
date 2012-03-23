@@ -16,7 +16,7 @@ import com.cohesiva.drifter.stellar.split.WithinBoundingBoxCriteria;
 /**
  * The <code>BoundingBox</code> represents a cubic bounding volume.
  * 
- * @author bkarmelita
+ * @author carmel
  * 
  */
 public class BoundingBox implements IBoundingBox {
@@ -95,6 +95,14 @@ public class BoundingBox implements IBoundingBox {
 	@Override
 	public int depth() {
 		return depth;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.cohesiva.drifter.stellar.IStellar#locate()
+	 */
+	@Override
+	public Location locate() {
+		return center();
 	}
 
 	/*
