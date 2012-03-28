@@ -6,7 +6,7 @@ package com.cohesiva.drifter.view.awt;
 import java.awt.Graphics;
 
 import com.cohesiva.drifter.common.Location;
-import com.cohesiva.drifter.terrain.IBoundingSquare;
+import com.cohesiva.drifter.planar.IBoundingSquare;
 
 /**
  * The <code>AWTBoundingSquareView</code> represents

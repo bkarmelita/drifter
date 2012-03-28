@@ -3,11 +3,11 @@
  */
 package com.cohesiva.drifter.view;
 
-import com.cohesiva.drifter.stellar.IStellar;
+import com.cohesiva.drifter.common.IVisible;
 
 /**
  * The <code>IViewFactory</code> defines an interface for the abstract factory
- * producing views for visualization of <code>IComplex</code> implementations.
+ * producing views for visualization of <code>IVisible</code> implementations.
  * 
  * @author carmel
  * 
@@ -15,12 +15,12 @@ import com.cohesiva.drifter.stellar.IStellar;
 public interface IViewFactory {
 
 	/**
-	 * Produces the view implementation for a given <code>IStellar</code>.
+	 * Produces the view implementation for a given <code>IVisible</code>.
 	 * 
-	 * @param stellar
-	 *            the stellar entity for which the view is requested
-	 * @return the view of a given stellar
+	 * @param visible
+	 *            the visible for which the view is requested
+	 * @return the view of a given visible
 	 */
-	public IView<IStellar> produceView(IStellar stellar);
+	public IView<IVisible> produceView(IVisible visible);
 
 }

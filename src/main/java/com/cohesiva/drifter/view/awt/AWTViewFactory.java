@@ -7,7 +7,7 @@ import java.awt.Graphics;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.cohesiva.drifter.stellar.IStellar;
+import com.cohesiva.drifter.common.IVisible;
 import com.cohesiva.drifter.view.IView;
 import com.cohesiva.drifter.view.IViewFactory;
 
@@ -52,9 +52,9 @@ public class AWTViewFactory implements IViewFactory {
 	 * .stellar.IStellar)
 	 */
 	@Override
-	public IView<IStellar> produceView(IStellar stellar) {
+	public IView<IVisible> produceView(IVisible stellar) {
 		// FIXME: unchecked get
-		IView<IStellar> view = viewMap.get(stellar.getClass().getName());
+		IView<IVisible> view = viewMap.get(stellar.getClass().getName());
 
 		return view;
 	}

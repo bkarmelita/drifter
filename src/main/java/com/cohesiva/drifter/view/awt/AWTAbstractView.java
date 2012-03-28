@@ -6,7 +6,7 @@ package com.cohesiva.drifter.view.awt;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import com.cohesiva.drifter.stellar.IStellar;
+import com.cohesiva.drifter.common.IVisible;
 import com.cohesiva.drifter.view.IView;
 
 /**
@@ -15,7 +15,7 @@ import com.cohesiva.drifter.view.IView;
  * @author carmel
  * 
  */
-public abstract class AWTAbstractView<T extends IStellar> implements IView<T> {
+public abstract class AWTAbstractView<T extends IVisible> implements IView<T> {
 
 	public static final Color DEFAULT_PAINT = Color.BLACK;
 	public static final Color DEFAULT_FILL = Color.WHITE;

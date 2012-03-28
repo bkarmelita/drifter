@@ -3,7 +3,7 @@
  */
 package com.cohesiva.drifter.view.gl;
 
-import com.cohesiva.drifter.stellar.IStellar;
+import com.cohesiva.drifter.common.IVisible;
 import com.cohesiva.drifter.view.IView;
 import com.cohesiva.drifter.view.IViewFactory;
 
@@ -24,7 +24,7 @@ public class GLViewFactory implements IViewFactory {
 	 * .drifter.split.IComplex)
 	 */
 	@Override
-	public IView<IStellar> produceView(IStellar stellar) {
+	public IView<IVisible> produceView(IVisible visible) {
 		// TODO Auto-generated method stub
 		return null;
 	}

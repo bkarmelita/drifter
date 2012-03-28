@@ -3,25 +3,25 @@
  */
 package com.cohesiva.drifter.view;
 
-import com.cohesiva.drifter.stellar.IStellar;
+import com.cohesiva.drifter.common.IVisible;
 
 /**
- * The <code>IView</code> defines an interface for <code>IStellar</code> view.
- * Every <code>IStellar</code> can have a visual representation and
- * <code>IView</code> responsibility is to display it. There can be more than
- * one <code>IView</code> implementation for the given <code>IStellar</code>.
+ * The <code>IView</code> defines an interface for visualizing. Every
+ * <code>IVisible</code> can have a visual representation and <code>IView</code>
+ * responsibility is to render it. There can be more than one <code>IView</code>
+ * implementation for the given <code>IVisible</code>.
  * 
  * @author carmel
  * 
  */
-public interface IView<T extends IStellar> {
+public interface IView<T extends IVisible> {
 
 	/**
 	 * Renders the given complex.
 	 * 
-	 * @param complex
-	 *            complex to render
+	 * @param visible
+	 *            visible to render
 	 */
-	public void render(T complex);
+	public void render(T visible);
 
 }

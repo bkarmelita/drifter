@@ -3,6 +3,7 @@
  */
 package com.cohesiva.drifter.stellar;
 
+import com.cohesiva.drifter.common.IEntity;
 import com.cohesiva.drifter.common.Location;
 
 /**
@@ -11,7 +12,7 @@ import com.cohesiva.drifter.common.Location;
  * @author carmel
  * 
  */
-public class Star implements IStellar {
+public class Star implements IEntity {
 
 	/**
 	 * The <code>starClass</code> stands for a star class.
@@ -24,12 +25,23 @@ public class Star implements IStellar {
 	protected Location location;
 
 	/**
+	 * The <code>diameter</code> stands for a star diameter.
+	 */
+	protected double diameter;
+
+	/**
+	 * The <code>mass</code> stands for a star mass.
+	 */
+	protected double mass;
+
+	/**
 	 * The <code>depth</code> stands for a birth depth.
 	 */
 	protected int depth;
 
 	/**
 	 * Creates the new <code>Start</code> instance.
+	 * TODO: refactor. Additional params required (mass, diameter).
 	 * 
 	 * @param location
 	 */
@@ -65,6 +77,44 @@ public class Star implements IStellar {
 	@Override
 	public Location locate() {
 		return location;
+	}
+
+	/**
+	 * Gets the current value of <code>diameter</code>.
+	 * 
+	 * @return the diameter
+	 */
+	public double getDiameter() {
+		return diameter;
+	}
+
+	/**
+	 * Sets the new value for <code>diameter</code>.
+	 * 
+	 * @param diameter
+	 *            the diameter to set
+	 */
+	public void setDiameter(double diameter) {
+		this.diameter = diameter;
+	}
+
+	/**
+	 * Gets the current value of <code>mass</code>.
+	 * 
+	 * @return the mass
+	 */
+	public double getMass() {
+		return mass;
+	}
+
+	/**
+	 * Sets the new value for <code>mass</code>.
+	 * 
+	 * @param mass
+	 *            the mass to set
+	 */
+	public void setMass(double mass) {
+		this.mass = mass;
 	}
 
 	/*

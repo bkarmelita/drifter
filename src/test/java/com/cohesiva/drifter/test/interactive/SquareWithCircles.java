@@ -8,12 +8,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import com.cohesiva.drifter.planar.BoundingSquare;
+import com.cohesiva.drifter.planar.IBoundingSquare;
 import com.cohesiva.drifter.population.IPopulationStrategy;
 import com.cohesiva.drifter.split.IComplex;
 import com.cohesiva.drifter.split.IOffset;
 import com.cohesiva.drifter.split.ISplitContext;
-import com.cohesiva.drifter.terrain.BoundingSquare;
-import com.cohesiva.drifter.terrain.IBoundingSquare;
 import com.cohesiva.drifter.test.interactive.shapes.Circle;
 import com.cohesiva.drifter.test.interactive.shapes.Square;
 

@@ -5,6 +5,7 @@ package com.cohesiva.drifter.stellar;
 
 import java.util.List;
 
+import com.cohesiva.drifter.common.IEntity;
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.split.IComplex;
 import com.cohesiva.drifter.split.IOffset;
@@ -223,12 +224,12 @@ public class BoundingBox implements IBoundingBox {
 	 * @param stellars
 	 * @return
 	 */
-	public static BoundingBox newInstance(List<IStellar> stellars) {
+	public static BoundingBox newInstance(List<IEntity> stellars) {
 		// {{ determine min and max of the given spatials
 		Location minLocation = new Location(stellars.get(0).locate());
 		Location maxLocation = new Location(stellars.get(0).locate());
 
-		for (IStellar stellar : stellars) {
+		for (IEntity stellar : stellars) {
 			Location location = stellar.locate();
 
 			// update the min location

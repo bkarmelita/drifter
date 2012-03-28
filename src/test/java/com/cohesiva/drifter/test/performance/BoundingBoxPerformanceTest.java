@@ -14,13 +14,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.cohesiva.drifter.common.DistanceUnit;
+import com.cohesiva.drifter.common.IEntity;
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.split.IOffset;
 import com.cohesiva.drifter.split.ISplitContext;
 import com.cohesiva.drifter.split.SplitDegree;
 import com.cohesiva.drifter.stellar.BoundingBox;
 import com.cohesiva.drifter.stellar.IBoundingBox;
-import com.cohesiva.drifter.stellar.IStellar;
 import com.cohesiva.drifter.stellar.Star;
 import com.cohesiva.drifter.stellar.StarClass;
 
@@ -32,8 +32,8 @@ import com.cohesiva.drifter.stellar.StarClass;
  */
 public class BoundingBoxPerformanceTest {
 	
-	private List<IStellar> stars100K = new LinkedList<IStellar>();
-	private List<IStellar> stars50K = new LinkedList<IStellar>();
+	private List<IEntity> stars100K = new LinkedList<IEntity>();
+	private List<IEntity> stars50K = new LinkedList<IEntity>();
 	private IBoundingBox box100K;
 	private IBoundingBox box50K;
 	private ISplitContext ctx;
@@ -47,7 +47,7 @@ public class BoundingBoxPerformanceTest {
 		// {{ generate 100K stars
 		for (int i = 0; i < 100000; i++) {
 			Location location = new Location(random.nextDouble() * 100, random.nextDouble() * 100, random.nextDouble() * 100, DistanceUnit.LIGHT_YEAR);
-			IStellar star = new Star(StarClass.O, location, 1);
+			IEntity star = new Star(StarClass.O, location, 1);
 			stars100K.add(star);
 		}
 		// }}
@@ -55,7 +55,7 @@ public class BoundingBoxPerformanceTest {
 		// {{ generate 250K stars
 		for (int i = 0; i < 5000; i++) {
 			Location location = new Location(random.nextDouble() * 100, random.nextDouble() * 100, random.nextDouble() * 100, DistanceUnit.LIGHT_YEAR);
-			IStellar star = new Star(StarClass.O, location, 1);
+			IEntity star = new Star(StarClass.O, location, 1);
 			stars50K.add(star);
 		}
 		// }}

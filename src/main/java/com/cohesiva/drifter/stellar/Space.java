@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.cohesiva.drifter.common.IEntity;
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.split.IComplex;
 import com.cohesiva.drifter.split.IOffset;
@@ -31,7 +32,7 @@ public class Space implements ISpace {
 	/**
 	 * The <code>stellars</code> stands for a list of elements in the universe.
 	 */
-	protected List<IStellar> stellars;
+	protected List<IEntity> stellars;
 
 	/**
 	 * The <code>bounds</code> stands for a bounding box
@@ -49,7 +50,7 @@ public class Space implements ISpace {
 	 * @param stellars
 	 * @param bounds
 	 */
-	public Space(List<IStellar> stellars, IBoundingBox bounds) {
+	public Space(List<IEntity> stellars, IBoundingBox bounds) {
 		super();
 
 		this.stellars = stellars;
@@ -81,7 +82,7 @@ public class Space implements ISpace {
 	 * @see com.codestellar.drifter.stellar.ISpace#stellars()
 	 */
 	@Override
-	public List<IStellar> stellars() {
+	public List<IEntity> stellars() {
 		return stellars;
 	}
 
@@ -93,13 +94,13 @@ public class Space implements ISpace {
 	 * .test.stellar .IStellar)
 	 */
 	@Override
-	public void addStellar(IStellar stellar) {
+	public void addStellar(IEntity stellar) {
 		// FIXME: memory issue (we should possibly code it more wisely)
 		if (stellars == null) {
 			// lazy initialize collection, when there is a memory need for
 			// stellars inside
 			// FIXME: consider a fast insertion collection
-			stellars = new LinkedList<IStellar>();
+			stellars = new LinkedList<IEntity>();
 		}
 
 		stellars.add(stellar);
@@ -197,7 +198,7 @@ public class Space implements ISpace {
 	public void onSplitComplete(ISplitContext ctx, IComplex[] splittedParts) {
 		// {{ move the stellars down to subspaces
 		while (this.complexity() > 0) {
-			IStellar stellar = stellars.remove(0);
+			IEntity stellar = stellars.remove(0);
 			// determine where the stellar should belong to (which subspace)
 			int stellarIndex = computeStellarSubspaceIndex(stellar);
 			// add stellar to appropriate subspace
@@ -221,9 +222,9 @@ public class Space implements ISpace {
 		ISpace spaceWhole = (ISpace) mergedWhole;
 
 		// {{ iterate through stellars
-		for (Iterator<IStellar> iterator = this.stellars().iterator(); iterator
+		for (Iterator<IEntity> iterator = this.stellars().iterator(); iterator
 				.hasNext();) {
-			IStellar stellar = iterator.next();
+			IEntity stellar = iterator.next();
 
 			if (stellar.depth() <= this.depth()) {
 				// move the stellar back to its origin
@@ -260,7 +261,7 @@ public class Space implements ISpace {
 	 * @param stellar
 	 * @return
 	 */
-	protected int computeStellarSubspaceIndex(IStellar stellar) {
+	protected int computeStellarSubspaceIndex(IEntity stellar) {
 		int index = 0;
 
 		Location spaceCenter = this.bounds().center();

@@ -3,10 +3,10 @@
  */
 package com.cohesiva.drifter.test.datastruct;
 
+import com.cohesiva.drifter.common.IEntity;
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.datastruct.ITreeNode;
 import com.cohesiva.drifter.datastruct.ITreeNodeVisitor;
-import com.cohesiva.drifter.stellar.IStellar;
 import com.cohesiva.drifter.stellar.Space;
 
 /**
@@ -64,7 +64,7 @@ public class StellarFinder implements ITreeNodeVisitor<Space> {
 	 */
 	@Override
 	public void visit(ITreeNode<Space> node) {
-		for (IStellar nextStellar : node.item().stellars()) {
+		for (IEntity nextStellar : node.item().stellars()) {
 			Location stellarLocation = nextStellar.locate();
 			if (stellarLocation.equals(templateLocation)) {
 				resultDepth = node.depth();

@@ -5,6 +5,7 @@ package com.cohesiva.drifter.stellar;
 
 import java.util.List;
 
+import com.cohesiva.drifter.common.IEntity;
 import com.cohesiva.drifter.split.IComplex;
 
 /**
@@ -23,7 +24,7 @@ public interface ISpace extends IComplex {
 	 * 
 	 * @return this <code>ISpace</code> <code>IStellar</code> entities
 	 */
-	public List<IStellar> stellars();
+	public List<IEntity> stellars();
 
 	/**
 	 * Gets the bounds of this <code>ISpace</code>.
@@ -43,6 +44,6 @@ public interface ISpace extends IComplex {
 	 * @param stellar
 	 *            stellar to add
 	 */
-	public void addStellar(IStellar stellar);
+	public void addStellar(IEntity stellar);
 
 }

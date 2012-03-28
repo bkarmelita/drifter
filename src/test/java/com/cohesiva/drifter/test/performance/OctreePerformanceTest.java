@@ -11,11 +11,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.cohesiva.drifter.common.DistanceUnit;
+import com.cohesiva.drifter.common.IEntity;
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.datastruct.ITreeNode;
 import com.cohesiva.drifter.datastruct.Tree;
 import com.cohesiva.drifter.stellar.BoundingBox;
-import com.cohesiva.drifter.stellar.IStellar;
 import com.cohesiva.drifter.stellar.Space;
 import com.cohesiva.drifter.stellar.Star;
 import com.cohesiva.drifter.stellar.StarClass;
@@ -28,8 +28,8 @@ import com.cohesiva.drifter.stellar.StarClass;
  */
 public class OctreePerformanceTest {
 
-	private List<IStellar> stars100K = new LinkedList<IStellar>();
-	private List<IStellar> stars50K = new LinkedList<IStellar>();
+	private List<IEntity> stars100K = new LinkedList<IEntity>();
+	private List<IEntity> stars50K = new LinkedList<IEntity>();
 	private Location targetLocation = new Location(0, 0, 0, DistanceUnit.LIGHT_YEAR);
 	private Random random = new Random();
 
@@ -38,7 +38,7 @@ public class OctreePerformanceTest {
 		// {{ generate 100K stars
 		for (int i = 0; i < 100000; i++) {
 			Location location = new Location(random.nextDouble() * 100, random.nextDouble() * 100, random.nextDouble() * 100, DistanceUnit.LIGHT_YEAR);
-			IStellar star = new Star(StarClass.O, location, 1);
+			IEntity star = new Star(StarClass.O, location, 1);
 			stars100K.add(star);
 		}
 		// }}
@@ -46,7 +46,7 @@ public class OctreePerformanceTest {
 		// {{ generate 50K stars
 		for (int i = 0; i < 50000; i++) {
 			Location location = new Location(random.nextDouble() * 100, random.nextDouble() * 100, random.nextDouble() * 100, DistanceUnit.LIGHT_YEAR);
-			IStellar star = new Star(StarClass.O, location, 1);
+			IEntity star = new Star(StarClass.O, location, 1);
 			stars50K.add(star);
 		}
 		// }}

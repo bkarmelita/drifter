@@ -18,6 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.cohesiva.drifter.common.DistanceUnit;
+import com.cohesiva.drifter.common.IEntity;
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.split.IOffset;
 import com.cohesiva.drifter.split.ISplitContext;
@@ -25,7 +26,6 @@ import com.cohesiva.drifter.split.SplitDegree;
 import com.cohesiva.drifter.stellar.BoundingBox;
 import com.cohesiva.drifter.stellar.IBoundingBox;
 import com.cohesiva.drifter.stellar.ISpace;
-import com.cohesiva.drifter.stellar.IStellar;
 import com.cohesiva.drifter.stellar.Space;
 
 /**
@@ -35,10 +35,10 @@ import com.cohesiva.drifter.stellar.Space;
  * 
  */
 public class SpaceTest {
-	private IStellar start;
-	private IStellar end;
-	private IStellar inside;
-	private IStellar outside;
+	private IEntity start;
+	private IEntity end;
+	private IEntity inside;
+	private IEntity outside;
 	private Location targetLocation;
 	private ISplitContext ctx;
 
@@ -48,25 +48,25 @@ public class SpaceTest {
 		// mock the split context cince Space does not make much use of it
 		ctx = mock(ISplitContext.class);
 		
-		start = mock(IStellar.class);
+		start = mock(IEntity.class);
 		when(start.locate()).thenReturn(
 				new Location(10, 0, 0, DistanceUnit.LIGHT_YEAR));
 
-		end = mock(IStellar.class);
+		end = mock(IEntity.class);
 		when(end.locate()).thenReturn(
 				new Location(-10, 0, 0, DistanceUnit.LIGHT_YEAR));
 
-		inside = mock(IStellar.class);
+		inside = mock(IEntity.class);
 		when(inside.locate()).thenReturn(targetLocation);
 
-		outside = mock(IStellar.class);
+		outside = mock(IEntity.class);
 		when(outside.locate()).thenReturn(
 				new Location(-11, 0, 0, DistanceUnit.LIGHT_YEAR));
 	}
 
 	@Test
 	public void testStellarBounds() {
-		List<IStellar> stellars = new LinkedList<IStellar>();
+		List<IEntity> stellars = new LinkedList<IEntity>();
 		stellars.add(start);
 		stellars.add(end);
 
@@ -88,7 +88,7 @@ public class SpaceTest {
 
 	@Test
 	public void testSplitSpace() {
-		List<IStellar> stellars = new LinkedList<IStellar>();
+		List<IEntity> stellars = new LinkedList<IEntity>();
 		stellars.add(start);
 		stellars.add(end);
 

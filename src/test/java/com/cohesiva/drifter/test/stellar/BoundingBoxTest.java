@@ -14,13 +14,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.cohesiva.drifter.common.DistanceUnit;
+import com.cohesiva.drifter.common.IEntity;
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.split.IOffset;
 import com.cohesiva.drifter.split.ISplitContext;
 import com.cohesiva.drifter.split.SplitDegree;
 import com.cohesiva.drifter.stellar.BoundingBox;
 import com.cohesiva.drifter.stellar.IBoundingBox;
-import com.cohesiva.drifter.stellar.IStellar;
 
 /**
  * The <code>SpaceTest</code> represents the bounding box unit test.
@@ -30,8 +30,8 @@ import com.cohesiva.drifter.stellar.IStellar;
  */
 public class BoundingBoxTest {
 
-	private IStellar start;
-	private IStellar end;
+	private IEntity start;
+	private IEntity end;
 	private ISplitContext ctx;
 
 	@Before
@@ -39,18 +39,18 @@ public class BoundingBoxTest {
 		// mock the split context since BoundingBox does not make much use of it
 		ctx = mock(ISplitContext.class);
 		
-		start = mock(IStellar.class);
+		start = mock(IEntity.class);
 		when(start.locate()).thenReturn(
 				new Location(-10, 0, 0, DistanceUnit.LIGHT_YEAR));
 
-		end = mock(IStellar.class);
+		end = mock(IEntity.class);
 		when(end.locate()).thenReturn(
 				new Location(10, 0, 0, DistanceUnit.LIGHT_YEAR));
 	}
 
 	@Test
 	public void testStellarBounds() {
-		List<IStellar> stellars = new LinkedList<IStellar>();
+		List<IEntity> stellars = new LinkedList<IEntity>();
 		stellars.add(start);
 		stellars.add(end);
 
@@ -63,7 +63,7 @@ public class BoundingBoxTest {
 
 	@Test
 	public void testSplitBounds() {
-		List<IStellar> stellars = new LinkedList<IStellar>();
+		List<IEntity> stellars = new LinkedList<IEntity>();
 		stellars.add(start);
 		stellars.add(end);
 

@@ -3,13 +3,14 @@
  */
 package com.cohesiva.drifter.split;
 
-import com.cohesiva.drifter.stellar.IStellar;
+import com.cohesiva.drifter.common.IPopulable;
+import com.cohesiva.drifter.common.IVisible;
 
 
 /**
- * The <code>IComplex</code> represents an interface for an abstract complex
- * element. <code>IComplex</code> has some complexity (typically it consists of
- * something). It can be split into <code>IComplex</code> subelements to reduce
+ * The <code>IComplex</code> represents an interface for a complex.
+ * <code>IComplex</code> has some complexity (typically it consists of
+ * something). It can be split into <code>IComplex</code> subentities to reduce
  * the complexity.
  * 
  * The <code>ISpace</code> and <code>IBoundingBox</code> are examples of
@@ -18,7 +19,7 @@ import com.cohesiva.drifter.stellar.IStellar;
  * @author carmel
  * 
  */
-public interface IComplex extends IStellar {
+public interface IComplex extends IPopulable, IVisible {
 
 	/*
 	 * The <code>DEFAULT_SPLIT_CRITERIA</code> stands for a default IComplex
