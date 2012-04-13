@@ -6,6 +6,8 @@ package com.cohesiva.drifter.test.datastruct;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Random;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -14,9 +16,9 @@ import com.cohesiva.drifter.common.DistanceUnit;
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.datastruct.ITreeNode;
 import com.cohesiva.drifter.datastruct.Tree;
-import com.cohesiva.drifter.stellar.IBoundingBox;
+import com.cohesiva.drifter.split.containers.BoundingBox;
+import com.cohesiva.drifter.split.containers.Volume;
 import com.cohesiva.drifter.stellar.IStellarConstants;
-import com.cohesiva.drifter.stellar.Space;
 import com.cohesiva.drifter.stellar.Star;
 import com.cohesiva.drifter.stellar.StarClass;
 
@@ -29,28 +31,28 @@ import com.cohesiva.drifter.stellar.StarClass;
 public class OctreeTest {
 	private double galaxyRadius = IStellarConstants.GALAXY_RADIUS.value(); 
 	private Location targetLocation = new Location(0, 0, 0, DistanceUnit.LIGHT_YEAR);
-	private Space space;
-	private IBoundingBox box;
+	private Volume volume;
+	private BoundingBox box;
 
 	@Before
 	public void setUp() {
 		box = IStellarConstants.GALAXY_BOUNDS;
-		space = new Space(box);
+		volume = new Volume(box, 0, new Random(0));
 		
-		space.addStellar(new Star(StarClass.O, new Location(-galaxyRadius * 2, -galaxyRadius * 2, -galaxyRadius * 2, DistanceUnit.LIGHT_YEAR), 0));
-		space.addStellar(new Star(StarClass.O, new Location(galaxyRadius * 2, -galaxyRadius * 2, -galaxyRadius * 2, DistanceUnit.LIGHT_YEAR), 0));
-		space.addStellar(new Star(StarClass.O, new Location(-galaxyRadius * 2, galaxyRadius * 2, -galaxyRadius * 2, DistanceUnit.LIGHT_YEAR), 0));
-		space.addStellar(new Star(StarClass.O, new Location(galaxyRadius * 2, galaxyRadius * 2, -galaxyRadius * 2, DistanceUnit.LIGHT_YEAR), 0));
+		volume.addContent(new Star(StarClass.O, new Location(-galaxyRadius * 2, -galaxyRadius * 2, -galaxyRadius * 2, DistanceUnit.LIGHT_YEAR), 0));
+		volume.addContent(new Star(StarClass.O, new Location(galaxyRadius * 2, -galaxyRadius * 2, -galaxyRadius * 2, DistanceUnit.LIGHT_YEAR), 0));
+		volume.addContent(new Star(StarClass.O, new Location(-galaxyRadius * 2, galaxyRadius * 2, -galaxyRadius * 2, DistanceUnit.LIGHT_YEAR), 0));
+		volume.addContent(new Star(StarClass.O, new Location(galaxyRadius * 2, galaxyRadius * 2, -galaxyRadius * 2, DistanceUnit.LIGHT_YEAR), 0));
 		
-		space.addStellar(new Star(StarClass.O, new Location(-galaxyRadius * 2, -galaxyRadius * 2, galaxyRadius * 2, DistanceUnit.LIGHT_YEAR), 0));
-		space.addStellar(new Star(StarClass.O, new Location(galaxyRadius * 2, -galaxyRadius * 2, galaxyRadius * 2, DistanceUnit.LIGHT_YEAR), 0));
-		space.addStellar(new Star(StarClass.O, new Location(-galaxyRadius * 2, galaxyRadius * 2, galaxyRadius * 2, DistanceUnit.LIGHT_YEAR), 0));
-		space.addStellar(new Star(StarClass.O, new Location(galaxyRadius * 2, galaxyRadius * 2, galaxyRadius * 2, DistanceUnit.LIGHT_YEAR), 0));
+		volume.addContent(new Star(StarClass.O, new Location(-galaxyRadius * 2, -galaxyRadius * 2, galaxyRadius * 2, DistanceUnit.LIGHT_YEAR), 0));
+		volume.addContent(new Star(StarClass.O, new Location(galaxyRadius * 2, -galaxyRadius * 2, galaxyRadius * 2, DistanceUnit.LIGHT_YEAR), 0));
+		volume.addContent(new Star(StarClass.O, new Location(-galaxyRadius * 2, galaxyRadius * 2, galaxyRadius * 2, DistanceUnit.LIGHT_YEAR), 0));
+		volume.addContent(new Star(StarClass.O, new Location(galaxyRadius * 2, galaxyRadius * 2, galaxyRadius * 2, DistanceUnit.LIGHT_YEAR), 0));
 	}
 	
 	@Test
 	public void testDepth() {
-		ITreeNode<Space> octree = new Tree<Space>(space);
+		ITreeNode<Volume> octree = new Tree<Volume>(volume);
 		octree.build(targetLocation, 1);
 
 		DepthMeter meter = new DepthMeter();
@@ -62,7 +64,7 @@ public class OctreeTest {
 	
 	@Test
 	public void test10StarCount() {
-		ITreeNode<Space> octree = new Tree<Space>(space);
+		ITreeNode<Volume> octree = new Tree<Volume>(volume);
 		octree.build(targetLocation, 2);
 
 		StellarCounter counter = new StellarCounter();
@@ -78,7 +80,7 @@ public class OctreeTest {
 	
 	@Test
 	public void testIndex() {
-		ITreeNode<Space> octree = new Tree<Space>(space);
+		ITreeNode<Volume> octree = new Tree<Volume>(volume);
 		octree.build(targetLocation, 2);
 
 		TreeIndexVerifier idxVerifier = new TreeIndexVerifier();
@@ -88,7 +90,7 @@ public class OctreeTest {
 	@Test
 	@Ignore
 	public void testOctree() {
-		ITreeNode<Space> octree = new Tree<Space>(space);
+		ITreeNode<Volume> octree = new Tree<Volume>(volume);
 		octree.build(targetLocation, 1);
 
 		DepthMeter meter = new DepthMeter();

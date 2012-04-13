@@ -3,7 +3,7 @@
  */
 package com.cohesiva.drifter.datastruct;
 
-import com.cohesiva.drifter.split.IComplex;
+import com.cohesiva.drifter.split.ISplitable;
 
 
 /**
@@ -14,7 +14,7 @@ import com.cohesiva.drifter.split.IComplex;
  * @author carmel
  * 
  */
-public interface ITreeNodeVisitor<T extends IComplex> {
+public interface ITreeNodeVisitor<T extends ISplitable> {
 
 	/**
 	 * Visit the given node.

@@ -11,7 +11,7 @@ import com.cohesiva.drifter.common.Location;
  * 
  * @author carmel
  */
-public interface ISplitCriteria<T extends IComplex> {
+public interface ISplitCriteria<T extends ISplitable> {
 
 	/**
 	 * Determines if the given context should be split into parts.

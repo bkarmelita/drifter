@@ -5,7 +5,7 @@ package com.cohesiva.drifter.test.datastruct;
 
 import com.cohesiva.drifter.datastruct.ITreeNode;
 import com.cohesiva.drifter.datastruct.ITreeNodeVisitor;
-import com.cohesiva.drifter.stellar.Space;
+import com.cohesiva.drifter.split.containers.Volume;
 
 /**
  * TODO: 
@@ -13,7 +13,7 @@ import com.cohesiva.drifter.stellar.Space;
  * @author carmel
  *
  */
-public class DepthMeter implements ITreeNodeVisitor<Space> {
+public class DepthMeter implements ITreeNodeVisitor<Volume> {
 	
 	protected int maxDepth = 0;
 
@@ -21,7 +21,7 @@ public class DepthMeter implements ITreeNodeVisitor<Space> {
 	 * @see com.cohesiva.drifter.test.datastruct.ITreeNodeVisitor#visit(com.cohesiva.drifter.test.datastruct.ITreeNode)
 	 */
 	@Override
-	public void visit(ITreeNode<Space> node) {
+	public void visit(ITreeNode<Volume> node) {
 		if (node.depth() > maxDepth) {
 			maxDepth = node.depth();
 		}

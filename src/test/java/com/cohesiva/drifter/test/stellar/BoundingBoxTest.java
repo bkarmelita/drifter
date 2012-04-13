@@ -14,13 +14,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.cohesiva.drifter.common.DistanceUnit;
-import com.cohesiva.drifter.common.IEntity;
+import com.cohesiva.drifter.common.IStellar;
 import com.cohesiva.drifter.common.Location;
 import com.cohesiva.drifter.split.IOffset;
 import com.cohesiva.drifter.split.ISplitContext;
 import com.cohesiva.drifter.split.SplitDegree;
-import com.cohesiva.drifter.stellar.BoundingBox;
-import com.cohesiva.drifter.stellar.IBoundingBox;
+import com.cohesiva.drifter.split.containers.BoundingBox;
 
 /**
  * The <code>SpaceTest</code> represents the bounding box unit test.
@@ -30,8 +29,8 @@ import com.cohesiva.drifter.stellar.IBoundingBox;
  */
 public class BoundingBoxTest {
 
-	private IEntity start;
-	private IEntity end;
+	private IStellar start;
+	private IStellar end;
 	private ISplitContext ctx;
 
 	@Before
@@ -39,22 +38,22 @@ public class BoundingBoxTest {
 		// mock the split context since BoundingBox does not make much use of it
 		ctx = mock(ISplitContext.class);
 		
-		start = mock(IEntity.class);
+		start = mock(IStellar.class);
 		when(start.locate()).thenReturn(
 				new Location(-10, 0, 0, DistanceUnit.LIGHT_YEAR));
 
-		end = mock(IEntity.class);
+		end = mock(IStellar.class);
 		when(end.locate()).thenReturn(
 				new Location(10, 0, 0, DistanceUnit.LIGHT_YEAR));
 	}
 
 	@Test
 	public void testStellarBounds() {
-		List<IEntity> stellars = new LinkedList<IEntity>();
+		List<IStellar> stellars = new LinkedList<IStellar>();
 		stellars.add(start);
 		stellars.add(end);
 
-		IBoundingBox box = BoundingBox.newInstance(stellars);
+		BoundingBox box = BoundingBox.newInstance(stellars);
 
 		assertEquals(new Location(0, 0, 0, DistanceUnit.LIGHT_YEAR),
 				box.center());
@@ -63,25 +62,25 @@ public class BoundingBoxTest {
 
 	@Test
 	public void testSplitBounds() {
-		List<IEntity> stellars = new LinkedList<IEntity>();
+		List<IStellar> stellars = new LinkedList<IStellar>();
 		stellars.add(start);
 		stellars.add(end);
 
-		IBoundingBox box = BoundingBox.newInstance(stellars);
+		BoundingBox box = BoundingBox.newInstance(stellars);
 		SplitDegree splitDegree = box.splitDegree();
-		IBoundingBox[] splitted = new IBoundingBox[splitDegree.value()];
+		BoundingBox[] splitted = new BoundingBox[splitDegree.value()];
 		for (IOffset offset : splitDegree.offsets()) {
-			splitted[offset.offsetIndex()] = (IBoundingBox) box.onSplit(ctx, offset);
+			splitted[offset.offsetIndex()] = (BoundingBox) box.onSplit(ctx, offset);
 		}
 
-		IBoundingBox frontBottomLeft = splitted[0];
-		IBoundingBox frontBottomRight = splitted[1];
-		IBoundingBox frontTopLeft = splitted[2];
-		IBoundingBox frontTopRight = splitted[3];
-		IBoundingBox rearBottomLeft = splitted[4];
-		IBoundingBox rearBottomRight = splitted[5];
-		IBoundingBox rearTopLeft = splitted[6];
-		IBoundingBox rearTopRight = splitted[7];
+		BoundingBox frontBottomLeft = splitted[0];
+		BoundingBox frontBottomRight = splitted[1];
+		BoundingBox frontTopLeft = splitted[2];
+		BoundingBox frontTopRight = splitted[3];
+		BoundingBox rearBottomLeft = splitted[4];
+		BoundingBox rearBottomRight = splitted[5];
+		BoundingBox rearTopLeft = splitted[6];
+		BoundingBox rearTopRight = splitted[7];
 
 		assertEquals(new Location(-5, -5, -5, DistanceUnit.LIGHT_YEAR),
 				frontBottomLeft.center());

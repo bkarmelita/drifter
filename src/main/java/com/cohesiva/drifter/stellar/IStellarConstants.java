@@ -3,6 +3,7 @@ package com.cohesiva.drifter.stellar;
 import com.cohesiva.drifter.common.Distance;
 import com.cohesiva.drifter.common.DistanceUnit;
 import com.cohesiva.drifter.common.Location;
+import com.cohesiva.drifter.split.containers.BoundingBox;
 
 
 /**
@@ -46,7 +47,7 @@ public interface IStellarConstants {
 	/**
 	 * The galaxy bounds.
 	 */
-	public static final IBoundingBox GALAXY_BOUNDS = new BoundingBox(
+	public static final BoundingBox GALAXY_BOUNDS = new BoundingBox(
 			Location.GALAXY_ORIGIN, GALAXY_RADIUS.value(), 0);
 
 }

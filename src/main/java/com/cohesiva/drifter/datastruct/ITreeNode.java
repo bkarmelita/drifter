@@ -4,8 +4,10 @@
 package com.cohesiva.drifter.datastruct;
 
 import com.cohesiva.drifter.common.Location;
-import com.cohesiva.drifter.split.IComplex;
+import com.cohesiva.drifter.population.IPopulationStrategy;
 import com.cohesiva.drifter.split.ISplitContext;
+import com.cohesiva.drifter.split.ISplitCriteria;
+import com.cohesiva.drifter.split.ISplitable;
 
 /**
  * The <code>ITreeNode</code> represents an interface for an abstract tree node.
@@ -13,7 +15,7 @@ import com.cohesiva.drifter.split.ISplitContext;
  * @author carmel
  * 
  */
-public interface ITreeNode<T extends IComplex> {
+public interface ITreeNode<T extends ISplitable> {
 
 	/**
 	 * Get the depth of this node.
@@ -72,7 +74,7 @@ public interface ITreeNode<T extends IComplex> {
 	 * @param threshold
 	 * @param maxDepth
 	 */
-	public void build(Location referenceLocation, int threshold, int maxDepth);
+	public void build(Location referenceLocation, ISplitCriteria<T> splitCriteria, IPopulationStrategy<T> populationStrategy, int threshold, int maxDepth);
 
 	/**
 	 * Builds this node regarding the reference location.
@@ -103,7 +105,7 @@ public interface ITreeNode<T extends IComplex> {
 	 *            the splitting context information (eg. player location)
 	 * @return subnodes of this node
 	 */
-	public ITreeNode<T>[] split(ISplitContext ctx);
+	public ITreeNode<T>[] split(ISplitContext<T> ctx);
 
 	/**
 	 * Merges this <code>ITreeNode</code> reducing his children.
@@ -111,6 +113,6 @@ public interface ITreeNode<T extends IComplex> {
 	 * @param splitContext
 	 *            the splitting context information (eg. player location)
 	 */
-	public T merge(ISplitContext ctx);
+	public T merge(ISplitContext<T> ctx);
 
 }

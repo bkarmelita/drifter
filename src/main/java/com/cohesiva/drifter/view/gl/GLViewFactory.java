@@ -3,9 +3,9 @@
  */
 package com.cohesiva.drifter.view.gl;
 
-import com.cohesiva.drifter.common.IVisible;
 import com.cohesiva.drifter.view.IView;
 import com.cohesiva.drifter.view.IViewFactory;
+import com.cohesiva.drifter.view.IVisible;
 
 /**
  * The <code>GLViewFactory</code> represents an implementation of the

@@ -3,7 +3,7 @@
  */
 package com.cohesiva.drifter.stellar;
 
-import com.cohesiva.drifter.common.IEntity;
+import com.cohesiva.drifter.common.IStellar;
 import com.cohesiva.drifter.common.Location;
 
 /**
@@ -12,7 +12,7 @@ import com.cohesiva.drifter.common.Location;
  * @author carmel
  * 
  */
-public class Star implements IEntity {
+public class Star implements IStellar {
 
 	/**
 	 * The <code>starClass</code> stands for a star class.

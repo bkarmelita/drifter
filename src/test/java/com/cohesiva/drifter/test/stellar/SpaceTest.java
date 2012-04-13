@@ -13,20 +13,20 @@ import static org.mockito.Mockito.when;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.cohesiva.drifter.common.DistanceUnit;
-import com.cohesiva.drifter.common.IEntity;
+import com.cohesiva.drifter.common.IStellar;
 import com.cohesiva.drifter.common.Location;
+import com.cohesiva.drifter.split.IBounding;
 import com.cohesiva.drifter.split.IOffset;
 import com.cohesiva.drifter.split.ISplitContext;
 import com.cohesiva.drifter.split.SplitDegree;
-import com.cohesiva.drifter.stellar.BoundingBox;
-import com.cohesiva.drifter.stellar.IBoundingBox;
-import com.cohesiva.drifter.stellar.ISpace;
-import com.cohesiva.drifter.stellar.Space;
+import com.cohesiva.drifter.split.containers.BoundingBox;
+import com.cohesiva.drifter.split.containers.Volume;
 
 /**
  * The <code>SpaceTest</code> represents a space unit test.
@@ -35,38 +35,38 @@ import com.cohesiva.drifter.stellar.Space;
  * 
  */
 public class SpaceTest {
-	private IEntity start;
-	private IEntity end;
-	private IEntity inside;
-	private IEntity outside;
+	private IStellar start;
+	private IStellar end;
+	private IStellar inside;
+	private IStellar outside;
 	private Location targetLocation;
 	private ISplitContext ctx;
 
 	@Before
 	public void setUp() {
 		targetLocation = new Location(0, 0, 0, DistanceUnit.LIGHT_YEAR);
-		// mock the split context cince Space does not make much use of it
+		// mock the split context cince Volume does not make much use of it
 		ctx = mock(ISplitContext.class);
 		
-		start = mock(IEntity.class);
+		start = mock(IStellar.class);
 		when(start.locate()).thenReturn(
 				new Location(10, 0, 0, DistanceUnit.LIGHT_YEAR));
 
-		end = mock(IEntity.class);
+		end = mock(IStellar.class);
 		when(end.locate()).thenReturn(
 				new Location(-10, 0, 0, DistanceUnit.LIGHT_YEAR));
 
-		inside = mock(IEntity.class);
+		inside = mock(IStellar.class);
 		when(inside.locate()).thenReturn(targetLocation);
 
-		outside = mock(IEntity.class);
+		outside = mock(IStellar.class);
 		when(outside.locate()).thenReturn(
 				new Location(-11, 0, 0, DistanceUnit.LIGHT_YEAR));
 	}
 
 	@Test
 	public void testStellarBounds() {
-		List<IEntity> stellars = new LinkedList<IEntity>();
+		List<IStellar> stellars = new LinkedList<IStellar>();
 		stellars.add(start);
 		stellars.add(end);
 
@@ -88,73 +88,73 @@ public class SpaceTest {
 
 	@Test
 	public void testSplitSpace() {
-		List<IEntity> stellars = new LinkedList<IEntity>();
+		List<IStellar> stellars = new LinkedList<IStellar>();
 		stellars.add(start);
 		stellars.add(end);
 
-		IBoundingBox box = BoundingBox.newInstance(stellars);
-		ISpace space = new Space(stellars, box);
+		BoundingBox box = BoundingBox.newInstance(stellars);
+		Volume volume = new Volume(stellars, box, 0, new Random(0));
 		
-		SplitDegree splitDegree = space.splitDegree();
-		ISpace[] splitted = new ISpace[splitDegree.value()];
+		SplitDegree splitDegree = volume.splitDegree();
+		Volume[] splitted = new Volume[splitDegree.value()];
 		for (IOffset offset : splitDegree.offsets()) {
-			splitted[offset.offsetIndex()] = (ISpace) space.onSplit(ctx, offset);
+			splitted[offset.offsetIndex()] = (Volume) volume.onSplit(ctx, offset);
 		}
-		space.onSplitComplete(ctx, splitted);
+		volume.onSplitComplete(ctx, splitted);
 
-		ISpace frontBottomLeftSpace = splitted[0];
-		IBoundingBox frontBottomLeftBox = frontBottomLeftSpace.bounds();
-		ISpace frontBottomRightSpace = splitted[1];
-		IBoundingBox frontBottomRightBox = frontBottomRightSpace.bounds();
-		ISpace frontTopLeftSpace = splitted[2];
-		IBoundingBox frontTopLeftBox = frontTopLeftSpace.bounds();
-		ISpace frontTopRightSpace = splitted[3];
-		IBoundingBox frontTopRightBox = frontTopRightSpace.bounds();
-		ISpace rearBottomLeftSpace = splitted[4];
-		IBoundingBox rearBottomLeftBox = rearBottomLeftSpace.bounds();
-		ISpace rearBottomRightSpace = splitted[5];
-		IBoundingBox rearBottomRightBox = rearBottomRightSpace.bounds();
-		ISpace rearTopLeftSpace = splitted[6];
-		IBoundingBox rearTopLeftBox = rearTopLeftSpace.bounds();
-		ISpace rearTopRightSpace = splitted[7];
-		IBoundingBox rearTopRightBox = rearTopRightSpace.bounds();
+		Volume frontBottomLeftSpace = splitted[0];
+		IBounding frontBottomLeftBox = frontBottomLeftSpace.bounds();
+		Volume frontBottomRightSpace = splitted[1];
+		IBounding frontBottomRightBox = frontBottomRightSpace.bounds();
+		Volume frontTopLeftSpace = splitted[2];
+		IBounding frontTopLeftBox = frontTopLeftSpace.bounds();
+		Volume frontTopRightSpace = splitted[3];
+		IBounding frontTopRightBox = frontTopRightSpace.bounds();
+		Volume rearBottomLeftSpace = splitted[4];
+		IBounding rearBottomLeftBox = rearBottomLeftSpace.bounds();
+		Volume rearBottomRightSpace = splitted[5];
+		IBounding rearBottomRightBox = rearBottomRightSpace.bounds();
+		Volume rearTopLeftSpace = splitted[6];
+		IBounding rearTopLeftBox = rearTopLeftSpace.bounds();
+		Volume rearTopRightSpace = splitted[7];
+		IBounding rearTopRightBox = rearTopRightSpace.bounds();
 
 		assertEquals(new Location(-5, -5, -5, DistanceUnit.LIGHT_YEAR),
 				frontBottomLeftBox.center());
 		assertEquals(5, frontBottomLeftBox.radius(), 0);
-		assertEquals(1, frontBottomLeftSpace.stellars().size());
+		assertEquals(1, frontBottomLeftSpace.contents().size());
 		assertEquals(new Location(5, -5, -5, DistanceUnit.LIGHT_YEAR),
 				frontBottomRightBox.center());
 		assertEquals(5, frontBottomRightBox.radius(), 0);
-		assertEquals(1, frontBottomRightSpace.stellars().size());
+		assertEquals(1, frontBottomRightSpace.contents().size());
 		assertEquals(new Location(-5, 5, -5, DistanceUnit.LIGHT_YEAR),
 				frontTopLeftBox.center());
 		assertEquals(5, frontTopLeftBox.radius(), 0);
-		assertNull(frontTopLeftSpace.stellars());
+		assertNull(frontTopLeftSpace.contents());
 		assertEquals(new Location(5, 5, -5, DistanceUnit.LIGHT_YEAR),
 				frontTopRightBox.center());
 		assertEquals(5, frontTopRightBox.radius(), 0);
-		assertNull(frontTopRightSpace.stellars());
+		assertNull(frontTopRightSpace.contents());
 		assertEquals(new Location(-5, -5, 5, DistanceUnit.LIGHT_YEAR),
 				rearBottomLeftBox.center());
 		assertEquals(5, rearBottomLeftBox.radius(), 0);
-		assertNull(rearBottomLeftSpace.stellars());
+		assertNull(rearBottomLeftSpace.contents());
 		assertEquals(new Location(5, -5, 5, DistanceUnit.LIGHT_YEAR),
 				rearBottomRightBox.center());
 		assertEquals(5, rearBottomRightBox.radius(), 0);
-		assertNull(rearBottomRightSpace.stellars());
+		assertNull(rearBottomRightSpace.contents());
 		assertEquals(new Location(-5, 5, 5, DistanceUnit.LIGHT_YEAR),
 				rearTopLeftBox.center());
 		assertEquals(5, rearTopLeftBox.radius(), 0);
-		assertNull(rearTopLeftSpace.stellars());
+		assertNull(rearTopLeftSpace.contents());
 		assertEquals(new Location(5, 5, 5, DistanceUnit.LIGHT_YEAR),
 				rearTopRightBox.center());
 		assertEquals(5, rearBottomRightBox.radius(), 0);
-		assertNull(rearBottomRightSpace.stellars());
+		assertNull(rearBottomRightSpace.contents());
 
 		
 		for (IOffset offset : splitDegree.offsets()) {
-			splitted[offset.offsetIndex()] = (ISpace) frontBottomLeftSpace.onSplit(ctx, offset);
+			splitted[offset.offsetIndex()] = (Volume) frontBottomLeftSpace.onSplit(ctx, offset);
 		}
 		frontBottomLeftSpace.onSplitComplete(ctx, splitted);
 
@@ -178,35 +178,35 @@ public class SpaceTest {
 		assertEquals(new Location(-7.5, -7.5, -7.5, DistanceUnit.LIGHT_YEAR),
 				frontBottomLeftBox.center());
 		assertEquals(2.5, frontBottomLeftBox.radius(), 0);
-		assertNull(frontTopLeftSpace.stellars());
+		assertNull(frontTopLeftSpace.contents());
 		assertEquals(new Location(-2.5, -7.5, -7.5, DistanceUnit.LIGHT_YEAR),
 				frontBottomRightBox.center());
 		assertEquals(2.5, frontBottomRightBox.radius(), 0);
-		assertNull(frontBottomRightSpace.stellars());
+		assertNull(frontBottomRightSpace.contents());
 		assertEquals(new Location(-7.5, -2.5, -7.5, DistanceUnit.LIGHT_YEAR),
 				frontTopLeftBox.center());
 		assertEquals(2.5, frontTopLeftBox.radius(), 0);
-		assertNull(frontTopLeftSpace.stellars());
+		assertNull(frontTopLeftSpace.contents());
 		assertEquals(new Location(-2.5, -2.5, -7.5, DistanceUnit.LIGHT_YEAR),
 				frontTopRightBox.center());
 		assertEquals(2.5, frontTopRightBox.radius(), 0);
-		assertNull(frontTopRightSpace.stellars());
+		assertNull(frontTopRightSpace.contents());
 		assertEquals(new Location(-7.5, -7.5, -2.5, DistanceUnit.LIGHT_YEAR),
 				rearBottomLeftBox.center());
 		assertEquals(2.5, rearBottomLeftBox.radius(), 0);
-		assertNull(rearBottomLeftSpace.stellars());
+		assertNull(rearBottomLeftSpace.contents());
 		assertEquals(new Location(-2.5, -7.5, -2.5, DistanceUnit.LIGHT_YEAR),
 				rearBottomRightBox.center());
 		assertEquals(2.5, rearBottomRightBox.radius(), 0);
-		assertNull(rearBottomRightSpace.stellars());
+		assertNull(rearBottomRightSpace.contents());
 		assertEquals(new Location(-7.5, -2.5, -2.5, DistanceUnit.LIGHT_YEAR),
 				rearTopLeftBox.center());
 		assertEquals(2.5, rearTopLeftBox.radius(), 0);
-		assertNotNull(rearTopLeftSpace.stellars());
+		assertNotNull(rearTopLeftSpace.contents());
 		assertEquals(new Location(-2.5, -2.5, -2.5, DistanceUnit.LIGHT_YEAR),
 				rearTopRightBox.center());
 		assertEquals(2.5, rearTopRightBox.radius(), 0);
-		assertNull(rearTopRightSpace.stellars());
+		assertNull(rearTopRightSpace.contents());
 	}
 
 }

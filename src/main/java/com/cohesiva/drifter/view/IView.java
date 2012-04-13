@@ -3,7 +3,6 @@
  */
 package com.cohesiva.drifter.view;
 
-import com.cohesiva.drifter.common.IVisible;
 
 /**
  * The <code>IView</code> defines an interface for visualizing. Every

@@ -4,7 +4,7 @@
 package com.cohesiva.drifter.population;
 
 import com.cohesiva.drifter.common.Location;
-import com.cohesiva.drifter.split.IComplex;
+import com.cohesiva.drifter.split.ISplitable;
 
 /**
  * The <code>IPopulationStrategy</code> defines an interface for the population
@@ -13,7 +13,7 @@ import com.cohesiva.drifter.split.IComplex;
  * @author carmel
  * 
  */
-public interface IPopulationStrategy<T extends IComplex> {
+public interface IPopulationStrategy<T extends ISplitable> {
 
 	/**
 	 * Populates the given complex.

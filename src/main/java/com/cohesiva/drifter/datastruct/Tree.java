@@ -4,10 +4,15 @@
 package com.cohesiva.drifter.datastruct;
 
 import com.cohesiva.drifter.common.Location;
-import com.cohesiva.drifter.split.IComplex;
+import com.cohesiva.drifter.population.IPopulationStrategy;
+import com.cohesiva.drifter.population.strategies.NoPopulationStrategy;
+import com.cohesiva.drifter.split.Container;
 import com.cohesiva.drifter.split.IOffset;
 import com.cohesiva.drifter.split.ISplitContext;
+import com.cohesiva.drifter.split.ISplitCriteria;
+import com.cohesiva.drifter.split.ISplitable;
 import com.cohesiva.drifter.split.SplitDegree;
+import com.cohesiva.drifter.split.criteria.InsideContainerSplitCriteria;
 
 /**
  * The <code>Tree</code> represents the default implementation of the tree.
@@ -15,7 +20,7 @@ import com.cohesiva.drifter.split.SplitDegree;
  * @author carmel
  * 
  */
-public class Tree<T extends IComplex> implements ITreeNode<T> {
+public class Tree<T extends Container> implements ITreeNode<T> {
 
 	/*
 	 * The <code>DEFAULT_THRESHOLD</code> stands for a default treshold.
@@ -86,7 +91,8 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 	 */
 	@Override
 	public void build(Location referenceLocation, int maxDepth) {
-		this.build(referenceLocation, DEFAULT_THRESHOLD, maxDepth);
+		this.build(referenceLocation, new InsideContainerSplitCriteria<T>(),
+				new NoPopulationStrategy<T>(), DEFAULT_THRESHOLD, maxDepth);
 	}
 
 	/*
@@ -98,7 +104,9 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 	 */
 	@Override
 	public void build(Location referenceLocation) {
-		this.build(referenceLocation, DEFAULT_THRESHOLD, DEFAULT_MAX_DEPTH);
+		this.build(referenceLocation, new InsideContainerSplitCriteria<T>(),
+				new NoPopulationStrategy<T>(), DEFAULT_THRESHOLD,
+				DEFAULT_MAX_DEPTH);
 	}
 
 	/*
@@ -109,12 +117,15 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 	 * common.Location, int, int)
 	 */
 	@Override
-	public void build(Location referenceLocation, int threshold, int maxDepth) {
+	public void build(Location referenceLocation,
+			ISplitCriteria<T> splitCriteria,
+			IPopulationStrategy<T> populationStrategy, int threshold,
+			int maxDepth) {
 		// prepare split context
-		ISplitContext ctx = this.new TreeSplitContext(referenceLocation);
+		ISplitContext<T> ctx = this.new TreeSplitContext(referenceLocation,
+				splitCriteria, populationStrategy);
 		// check if we shall go into deep (split / merge)
-		if (complex.splitCriteria().evaluate(complex, referenceLocation,
-				threshold)
+		if (splitCriteria.evaluate(complex, referenceLocation, threshold)
 				&& this.depth() < maxDepth) {
 			// we are of high complexity so we try to split ...
 			this.split(ctx);
@@ -122,7 +133,8 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 			// {{ .. than recursively build every child
 			for (int i = 0; i < this.children.length; i++) {
 				ITreeNode<T> child = this.children[i];
-				child.build(referenceLocation, threshold, maxDepth);
+				child.build(referenceLocation, splitCriteria,
+						populationStrategy, threshold, maxDepth);
 			}
 			// }}
 		} else {
@@ -212,20 +224,21 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 
 		return result;
 	}
-	
+
 	/**
 	 * TODO: experimental, check it in JUnit
+	 * 
 	 * @param offset
 	 * @return
 	 */
 	protected long subindex(IOffset offset) {
 		long result = this.index();
 		SplitDegree splitDegree = this.complex.splitDegree();
-		
+
 		int bitsToShift = (this.depth() + 1) * splitDegree.dimension();
 		int offsetIndex = offset.offsetIndex() << bitsToShift;
 		result += offsetIndex;
-		
+
 		return result;
 	}
 
@@ -261,12 +274,12 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 			// get the split degree from complex
 			SplitDegree splitDegree = complex.splitDegree();
 			// prepare bounding box placeholders for child octants
-			IComplex[] subcontents = new IComplex[splitDegree.value()];
+			ISplitable[] subcontents = new ISplitable[splitDegree.value()];
 
 			// {{ iterate through offsets to create subcontents
 			for (IOffset offset : splitDegree.offsets()) {
 				// call split/merge lifecycle to split into new subcomplex
-				IComplex subcomplex = complex.onSplit(ctx, offset);
+				ISplitable subcomplex = complex.onSplit(ctx, offset);
 				// store subcomplex
 				subcontents[offset.offsetIndex()] = subcomplex;
 			}
@@ -280,7 +293,8 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 
 			// {{ create each tree child and store subcomplex inside
 			for (int i = 0; i < this.children.length; i++) {
-				Tree childNode = new Tree(subcontents[i], i, this.depth() + 1);
+				Tree childNode = new Tree((T) subcontents[i], i,
+						this.depth() + 1);
 				childNode.parent = this;
 				children[i] = childNode;
 			}
@@ -336,12 +350,23 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 	 * @author carmel
 	 * 
 	 */
-	private class TreeSplitContext implements ISplitContext {
+	private class TreeSplitContext implements ISplitContext<T> {
 
 		/**
 		 * The <code>referenceLocation</code> stands for a split location.
 		 */
 		private Location referenceLocation;
+
+		/**
+		 * The <code>splitCriteria</code> stands for a split criteria.
+		 */
+		private ISplitCriteria<T> splitCriteria;
+
+		/**
+		 * The <code>populationStrategy</code> stands for a split population
+		 * strategy.
+		 */
+		private IPopulationStrategy<T> populationStrategy;
 
 		/**
 		 * Creates the new <code>TreeSplitContext</code> instance.
@@ -350,25 +375,76 @@ public class Tree<T extends IComplex> implements ITreeNode<T> {
 		 * @param offset
 		 * @param referenceLocation
 		 */
-		private TreeSplitContext(Location referenceLocation) {
+		private TreeSplitContext(Location referenceLocation,
+				ISplitCriteria<T> splitCriteria,
+				IPopulationStrategy<T> populationStrategy) {
 			super();
 
 			this.referenceLocation = referenceLocation;
+			this.splitCriteria = splitCriteria;
+			this.populationStrategy = populationStrategy;
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.cohesiva.drifter.split.ISplitContext#index()
+		 */
 		@Override
 		public long index() {
 			return Tree.this.index();
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.cohesiva.drifter.split.ISplitContext#depth()
+		 */
+		@Override
+		public int depth() {
+			return Tree.this.depth();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * com.cohesiva.drifter.split.ISplitContext#subindex(com.cohesiva.drifter
+		 * .split.IOffset)
+		 */
 		@Override
 		public long subindex(IOffset offset) {
 			return Tree.this.subindex(offset);
 		}
 
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.cohesiva.drifter.split.ISplitContext#referenceLocation()
+		 */
 		@Override
 		public Location referenceLocation() {
 			return referenceLocation;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.cohesiva.drifter.split.ISplitContext#splitCriteria()
+		 */
+		@Override
+		public ISplitCriteria<T> splitCriteria() {
+			return this.splitCriteria;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see com.cohesiva.drifter.split.ISplitContext#populationStrategy()
+		 */
+		@Override
+		public IPopulationStrategy<T> populationStrategy() {
+			return this.populationStrategy;
 		}
 
 	}
